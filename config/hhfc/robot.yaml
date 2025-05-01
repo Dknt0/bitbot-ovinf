@@ -186,10 +186,10 @@ RobotConfig:
     inference:
       # policy_type: "HumanoidStand"
       # stand_threshold: 0.045
-      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/apr23_22_stand.onnx"
+      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/apr23_22_stand.onnx"
 
       policy_type: "Humanoid"
-      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/apr28_11.onnx"
+      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/apr28_11.onnx"
 
       log_data: true
       log_dir: "/home/dknt/Project/bitbot-ovinf/log/policy"

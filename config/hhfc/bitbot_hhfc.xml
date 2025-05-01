@@ -4,7 +4,7 @@
 
   <backend port="12888" settings_file="./backend.json"/>
 
-  <mujoco file="../models/xml/hhfc.xml"/>
+  <mujoco file="../../models/hhfc/xml/hhfc.xml"/>
   
   <bus>
     <device id="0" type="MujocoJoint" name="Rarm_shoulder_p_joint" mode="torque"
