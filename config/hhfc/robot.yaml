@@ -3,6 +3,7 @@ RobotConfig:
   type: "mujoco"
   joint_size: 14
   motor_size: 14
+  switching_time: 0.50
   joint_names: &joint_names
     - "l_hip_p"
     - "l_hip_r"
@@ -178,31 +179,33 @@ RobotConfig:
     p_gains: *default_p_gains
     d_gains: *default_d_gains
 
-  policy_humanoid:
+  policy_standing:
     p_gains: *default_p_gains
     d_gains: *default_d_gains
     decimation: 10
 
     inference:
       # Humanoid-gym based walking
-      policy_type: "Humanoid"
-      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/apr28_11.onnx"
-      obs_buffer_size: 15
+      # policy_type: "Humanoid"
+      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/apr28_11.onnx"
+      # obs_buffer_size: 15
 
       # Humanoid-gym based walking-standing
-      # policy_type: "HumanoidStand"
-      # stand_threshold: 0.045
-      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/apr23_22_stand.onnx"
-      # obs_buffer_size: 15
+      policy_type: "HumanoidStand"
+      stand_threshold: 0.045
+      obs_buffer_size: 15
+      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/150p_stand.onnx"
+      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/faster_stand_3.onnx"
 
       # Agi-gym DH based walking-standing
       # policy_type: "HumanoidStand"
       # stand_threshold: 0.045
-      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/dh.onnx"
+      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/dh_test.onnx"
       # obs_buffer_size: 66
 
       log_data: true
       log_dir: "/home/dknt/Project/bitbot-ovinf/log/policy"
+      log_name: "standing"
 
       device: "CPU"
       cycle_time: 0.80
@@ -218,8 +221,9 @@ RobotConfig:
         proj_gravity: 1.0
       clip_action: 18.0
       realtime: true # false
+      stick_to_core: 5
 
-      policy_joint_names:
+      policy_joint_names: &default_policy_joint_names
         - "l_hip_p"
         - "l_hip_r"
         - "l_hip_y"
@@ -233,7 +237,7 @@ RobotConfig:
         - "r_ankle_p"
         - "r_ankle_r"
 
-      policy_default_position:
+      policy_default_position: &default_policy_default_position
         l_hip_p: 0.3
         l_hip_r: 0.0
         l_hip_y: 0.0
@@ -247,3 +251,70 @@ RobotConfig:
         r_ankle_p: -0.3
         r_ankle_r: 0.0
 
+  policy_walking:
+    p_gains: *default_p_gains
+    d_gains: *default_d_gains
+    decimation: 10
+
+    inference:
+      # Humanoid-gym based walking
+      policy_type: "Humanoid"
+      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/faster_stand.onnx"
+      obs_buffer_size: 15
+
+      log_data: true
+      log_dir: "/home/dknt/Project/bitbot-ovinf/log/policy"
+      log_name: "walking"
+
+      device: "CPU"
+      cycle_time: 0.80
+      single_obs_size: 47
+      action_size: 12
+      action_scale: 0.5
+      obs_scales:
+        ang_vel: 1.0
+        lin_vel: 2.0
+        command: 1.0
+        dof_pos: 1.0
+        dof_vel: 0.05
+        proj_gravity: 1.0
+      clip_action: 18.0
+      realtime: true # false
+      stick_to_core: 6
+
+      policy_joint_names: *default_policy_joint_names
+      policy_default_position: *default_policy_default_position
+
+  policy_robust:
+    p_gains: *default_p_gains
+    d_gains: *default_d_gains
+    decimation: 10
+
+    inference:
+      policy_type: "HumanoidStand"
+      stand_threshold: 0.045
+      obs_buffer_size: 15
+      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/fast_stand_4.onnx"
+
+      log_data: true
+      log_dir: "/home/dknt/Project/bitbot-ovinf/log/policy"
+      log_name: "robust"
+
+      device: "CPU"
+      cycle_time: 0.80
+      single_obs_size: 47
+      action_size: 12
+      action_scale: 0.5
+      obs_scales:
+        ang_vel: 1.0
+        lin_vel: 2.0
+        command: 1.0
+        dof_pos: 1.0
+        dof_vel: 0.05
+        proj_gravity: 1.0
+      clip_action: 18.0
+      realtime: true # false
+      stick_to_core: 6
+
+      policy_joint_names: *default_policy_joint_names
+      policy_default_position: *default_policy_default_position

@@ -1,5 +1,7 @@
 # bitbot-ovinf
 
+This is an OpenVINO based humanoid robot RL simulation and deployment framework. All implementations are hidden in [ovinf](https://github.com/Dknt0/ovinf). Mujoco simulation and EtherCAT communication are based on [bitbot](https://bitbot.lmy.name).
+
 Usage:
 
 1. Clone the repository.

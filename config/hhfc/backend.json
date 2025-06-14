@@ -21,8 +21,24 @@
       "kb_key": "p"
     },
     {
-      "event": "policy_run",
+      "event": "run_policy",
       "kb_key": "r"
+    },
+    {
+      "event": "enable_standing_policy",
+      "kb_key": "1"
+    },
+    {
+      "event": "enable_warking_policy",
+      "kb_key": "2"
+    },
+    {
+      "event": "enable_robust_policy",
+      "kb_key": "3"
+    },
+    {
+      "event": "policy_switch",
+      "kb_key": "2"
     },
     {
       "event": "velo_x_increase",

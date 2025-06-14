@@ -11,7 +11,6 @@
 
 #include "controller/init_pos.hpp"
 #include "controller/policy_controller.hpp"
-#include "controller/zero_pos.hpp"
 
 #ifdef BITBOT_DEPLOY
 #include "robot/hhfc_cifx/hhfc_cifx_common.h"
@@ -25,7 +24,11 @@ using RobotT = ovinf::RobotHhfcMj;
 
 enum Events {
   InitPose = 1001,
-  PolicyRun,
+  RunPolicy,
+  EnableStandingPolicy,
+  EnableWarkingPolicy,
+  EnableRobustPolicy,
+  PolicySwitch,
 
   VeloxIncrease = 2001,
   VeloxDecrease = 2002,
@@ -43,7 +46,8 @@ enum class States : bitbot::StateId {
   Waiting = 1001,
 
   InitPose,
-  PolicyRun,
+  PolicyRunning,
+  PolicySwitching,
 };
 
 class MakeBitbotEverywhere {
@@ -54,21 +58,24 @@ class MakeBitbotEverywhere {
     logger_ = bitbot::Logger().ConsoleLogger();
     YAML::Node config = YAML::LoadFile(controller_config);
 
+    switching_time_ = config["RobotConfig"]["switching_time"].as<double>();
+
     // robot
     robot_ = std::make_shared<RobotT>(config["RobotConfig"]);
-    // robot_->PrintInfo();
 
     // init controller
     init_pos_controller_ = std::make_shared<ovinf::InitPosController>(
         robot_, config["RobotConfig"]["init_pos"]);
 
-    // zero controller
-    zero_pos_controller_ = std::make_shared<ovinf::ZeroPosController>(
-        robot_, config["RobotConfig"]["zero_pos"]);
-
     // Policy net
-    humanoid_controller_ = std::make_shared<ovinf::PolicyController>(
-        robot_, config["RobotConfig"]["policy_humanoid"]);
+    standing_controller_ = std::make_shared<ovinf::PolicyController>(
+        robot_, config["RobotConfig"]["policy_standing"]);
+    walking_controller_ = std::make_shared<ovinf::PolicyController>(
+        robot_, config["RobotConfig"]["policy_walking"]);
+    robust_controller_ = std::make_shared<ovinf::PolicyController>(
+        robot_, config["RobotConfig"]["policy_robust"]);
+    current_policy_controller_ = standing_controller_;
+    target_policy_controller_ = standing_controller_;
 
     command_.setZero();
   }
@@ -87,10 +94,64 @@ class MakeBitbotEverywhere {
         });
 
     kernel_.RegisterEvent(
-        "policy_run", static_cast<bitbot::EventId>(Events::PolicyRun),
+        "run_policy", static_cast<bitbot::EventId>(Events::RunPolicy),
         [this](bitbot::EventValue, UserData &) {
-          humanoid_controller_->Init();
-          return static_cast<bitbot::StateId>(States::PolicyRun);
+          current_policy_controller_ = standing_controller_;
+          current_policy_controller_->Init();
+          return static_cast<bitbot::StateId>(States::PolicyRunning);
+        });
+
+    kernel_.RegisterEvent(
+        "enable_standing_policy",
+        static_cast<bitbot::EventId>(Events::EnableStandingPolicy),
+        [this](bitbot::EventValue, UserData &) {
+          if (current_policy_controller_ == standing_controller_) {
+            logger_->warn("Standing policy is already enabled");
+            return static_cast<bitbot::StateId>(States::PolicyRunning);
+          } else {
+            logger_->info("Enabling standing policy");
+            target_policy_controller_ = standing_controller_;
+            target_policy_controller_->Init();
+            return static_cast<bitbot::StateId>(States::PolicySwitching);
+          }
+        });
+
+    kernel_.RegisterEvent(
+        "enable_warking_policy",
+        static_cast<bitbot::EventId>(Events::EnableWarkingPolicy),
+        [this](bitbot::EventValue, UserData &) {
+          if (current_policy_controller_ == walking_controller_) {
+            logger_->warn("Walking policy is already enabled");
+            return static_cast<bitbot::StateId>(States::PolicyRunning);
+          } else {
+            logger_->info("Enabling walking policy");
+            target_policy_controller_ = walking_controller_;
+            target_policy_controller_->Init();
+            return static_cast<bitbot::StateId>(States::PolicySwitching);
+          }
+        });
+
+    kernel_.RegisterEvent(
+        "enable_robust_policy",
+        static_cast<bitbot::EventId>(Events::EnableRobustPolicy),
+        [this](bitbot::EventValue, UserData &) {
+          if (current_policy_controller_ == robust_controller_) {
+            logger_->warn("Robust policy is already enabled");
+            return static_cast<bitbot::StateId>(States::PolicyRunning);
+          } else {
+            logger_->info("Enabling robust policy");
+            target_policy_controller_ = robust_controller_;
+            target_policy_controller_->Init();
+            return static_cast<bitbot::StateId>(States::PolicySwitching);
+          }
+        });
+
+    kernel_.RegisterEvent(
+        "policy_switch", static_cast<bitbot::EventId>(Events::PolicySwitch),
+        [this](bitbot::EventValue, UserData &) {
+          current_policy_controller_->Stop();
+          current_policy_controller_ = target_policy_controller_;
+          return static_cast<bitbot::StateId>(States::PolicyRunning);
         });
 
     kernel_.RegisterEvent(
@@ -206,24 +267,51 @@ class MakeBitbotEverywhere {
                Kernel::ExtraData &extra_data, UserData &user_data) {
           robot_->Observer()->Update();
           init_pos_controller_->Step();
-          // TODO: Add policy switching state to warmup between policy.
-          humanoid_controller_->WarmUp();
+          target_policy_controller_->WarmUp();
           robot_->Executor()->ExecuteJointTorque();
         },
-        {Events::PolicyRun});
+        {Events::RunPolicy});
 
     kernel_.RegisterState(
-        "policy_run", static_cast<bitbot::StateId>(States::PolicyRun),
+        "policy_running", static_cast<bitbot::StateId>(States::PolicyRunning),
         [this](const bitbot::KernelInterface &kernel,
                Kernel::ExtraData &extra_data, UserData &user_data) {
           robot_->Observer()->Update();
-          humanoid_controller_->GetCommand() = command_;
-          humanoid_controller_->Step();
+          current_policy_controller_->GetCommand() = command_;
+          current_policy_controller_->Step();
           robot_->Executor()->ExecuteJointTorque();
         },
         {Events::VeloxDecrease, Events::VeloxIncrease, Events::VeloyDecrease,
          Events::VeloyIncrease, Events::VelowIncrease, Events::VelowDecrease,
-         Events::SetVelX, Events::SetVelY, Events::SetVelW});
+         Events::SetVelX, Events::SetVelY, Events::SetVelW,
+         Events::EnableStandingPolicy, Events::EnableWarkingPolicy,
+         Events::EnableRobustPolicy});
+
+    kernel_.RegisterState(
+        "policy_switching",
+        static_cast<bitbot::StateId>(States::PolicySwitching),
+        [this](const bitbot::KernelInterface &kernel,
+               Kernel::ExtraData &extra_data, UserData &user_data) {
+          if (!switching_flag_) {
+            switching_flag_ = true;
+            switching_start_time_ = std::chrono::steady_clock::now();
+          }
+          double current_switching_time =
+              std::chrono::duration<double>(std::chrono::steady_clock::now() -
+                                            switching_start_time_)
+                  .count();
+          if (current_switching_time < switching_time_) {
+            robot_->Observer()->Update();
+            current_policy_controller_->GetCommand() = command_;
+            current_policy_controller_->Step();
+            target_policy_controller_->WarmUp();
+            robot_->Executor()->ExecuteJointTorque();
+          } else {
+            switching_flag_ = false;
+            kernel.EmitEvent(Events::PolicySwitch, 0);
+          }
+        },
+        {Events::PolicySwitch});
 
     // First state
     kernel_.SetFirstState(static_cast<bitbot::StateId>(States::Waiting));
@@ -240,8 +328,16 @@ class MakeBitbotEverywhere {
   bitbot::SpdLoggerSharedPtr logger_;
   RobotT::Ptr robot_;
   ovinf::InitPosController::Ptr init_pos_controller_;
-  ovinf::ZeroPosController::Ptr zero_pos_controller_;
-  ovinf::PolicyController::Ptr humanoid_controller_;
+
+  ovinf::PolicyController::Ptr standing_controller_ = nullptr;
+  ovinf::PolicyController::Ptr walking_controller_ = nullptr;
+  ovinf::PolicyController::Ptr robust_controller_ = nullptr;
+  ovinf::PolicyController::Ptr current_policy_controller_ = nullptr;
+  ovinf::PolicyController::Ptr target_policy_controller_ = nullptr;
+
+  bool switching_flag_ = false;
+  double switching_time_;
+  std::chrono::steady_clock::time_point switching_start_time_;
 
   Eigen::Vector3f command_;
 };

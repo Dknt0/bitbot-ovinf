@@ -42,5 +42,6 @@
             pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
 
     <device id="16" type="MujocoFramepos" name="imu_pos" />
+    <device id="17" type="MujocoFramelinvel" name="imu_linvel" />
   </bus>
 </bitbot>

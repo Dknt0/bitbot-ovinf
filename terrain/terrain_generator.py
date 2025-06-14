@@ -9,8 +9,6 @@ import xml.etree.ElementTree as xml_et
 import numpy as np
 import cv2
 import noise
-from numpy.core.fromnumeric import size
-from numpy.random import rand
 
 ROOT_PATH = "/home/dknt/Project/bitbot-ovinf/models/hhfc/"
 INPUT_SCENE_PATH = ROOT_PATH + "xml/hhfc.xml"
