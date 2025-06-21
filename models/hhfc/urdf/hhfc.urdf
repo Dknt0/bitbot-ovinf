@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <robot
-  name="urdf-20250211">
+  name="hhfc_sf">
   <link
     name="base_thorax">
     <inertial>
@@ -8,7 +8,7 @@
         xyz="0.0071545 -0.00014864 0.10711"
         rpy="0 0 0" />
       <mass
-        value="18.114" />
+        value="20" />
       <inertia
         ixx="0.096973"
         ixy="-2.6251E-05"
@@ -45,7 +45,7 @@
         xyz="-0.0065868 0.038281 -0.019058"
         rpy="0 0 0" />
       <mass
-        value="0.79889" />
+        value="0.8" />
       <inertia
         ixx="0.0016035"
         ixy="1.5686E-08"
@@ -84,8 +84,8 @@
     <limit
       lower="-1.5708"
       upper="3.1416"
-      effort="100"
-      velocity="10" />
+      effort="250"
+      velocity="5000" />
   </joint>
   <link
     name="Lleg_hip_r">
@@ -94,7 +94,7 @@
         xyz="0.041051 0.0017918 -0.012588"
         rpy="0 0 0" />
       <mass
-        value="2.2937" />
+        value="2.4" />
       <inertia
         ixx="0.0024447"
         ixy="-1.2696E-05"
@@ -117,12 +117,6 @@
           rgba="0.89804 0.91765 0.92941 1" />
       </material>
     </visual>
-    <collision>
-      <origin xyz="0.05 0.0 -0.225" rpy="0 0 0"/>
-      <geometry>
-        <cylinder radius="0.05" length="0.2"/>
-      </geometry>
-    </collision>
   </link>
   <joint
     name="Lleg_hip_r_joint"
@@ -140,7 +134,7 @@
       lower="-0.12217"
       upper="0.52359" 
       effort="100"
-      velocity="10" />
+      velocity="5000" />
   </joint>
   <link
     name="Lleg_hip_y">
@@ -149,7 +143,7 @@
         xyz="0.0012764 -0.012311 -0.11618"
         rpy="0 0 0" />
       <mass
-        value="4.5531" />
+        value="4.7" />
       <inertia
         ixx="0.0060244"
         ixy="-1.1206E-05"
@@ -189,7 +183,7 @@
       lower="-1.0472"
       upper="1.2217" 
       effort="100"
-      velocity="10" />
+      velocity="5000" />
   </joint>
   <link
     name="Lleg_knee">
@@ -198,7 +192,7 @@
         xyz="-0.0071953 0.00012337 -0.15866"
         rpy="0 0 0" />
       <mass
-        value="4.1746" />
+        value="4.4" />
       <inertia
         ixx="0.015917"
         ixy="-5.6662E-06"
@@ -221,12 +215,6 @@
           rgba="0.89804 0.91765 0.92941 1" />
       </material>
     </visual>
-    <collision>
-      <origin xyz="0 0 -0.175" rpy="0 0 0"/>
-      <geometry>
-        <cylinder radius="0.05" length="0.25"/>
-      </geometry>
-    </collision>
   </link>
   <joint
     name="Lleg_knee_joint"
@@ -243,8 +231,8 @@
     <limit
       lower="-1.5708"
       upper="0"
-      effort="100"
-      velocity="10" />
+      effort="250"
+      velocity="5000" />
   </joint>
   <link
     name="Lleg_ankle_p">
@@ -253,7 +241,7 @@
         xyz="0.0010341 -8.5615E-08 7.218E-08"
         rpy="0 0 0" />
       <mass
-        value="0.15381" />
+        value="0.24" />
       <inertia
         ixx="2.9623E-05"
         ixy="-2.687E-10"
@@ -290,10 +278,10 @@
     <axis
       xyz="0 1 0" />
     <limit
-      lower="-0.6108"
-      upper="0.6108"
+      lower="-0.6981317007977318"
+      upper="0.6981317007977318"
       effort="100"
-      velocity="10" />
+      velocity="5000" />
   </joint>
   <link
     name="Lleg_ankle_r">
@@ -302,7 +290,7 @@
         xyz="0.021653 2.4677E-08 -0.044273"
         rpy="0 0 0" />
       <mass
-        value="0.87283" />
+        value="0.88" />
       <inertia
         ixx="0.0012516"
         ixy="-1.099E-08"
@@ -317,7 +305,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="../meshes/Lleg_ankle_r.STL" />
+          filename="../meshes/whole_foot_visual.stl" />
       </geometry>
       <material
         name="">
@@ -326,27 +314,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.080 0.050 -0.063" rpy="0 0 0"/>
       <geometry>
-        <sphere radius="0.005"/>
-      </geometry>
-    </collision>
-    <collision>
-      <origin xyz="-0.080 -0.050 -0.063" rpy="0 0 0"/>
-      <geometry>
-        <sphere radius="0.005"/>
-      </geometry>
-    </collision>
-    <collision>
-      <origin xyz="0.145 0.050 -0.063" rpy="0 0 0"/>
-      <geometry>
-        <sphere radius="0.005"/>
-      </geometry>
-    </collision>
-    <collision>
-      <origin xyz="0.145 -0.050 -0.063" rpy="0 0 0"/>
-      <geometry>
-        <sphere radius="0.005"/>
+        <mesh
+          filename="../meshes/whole_foot.stl" />
       </geometry>
     </collision>
   </link>
@@ -363,10 +333,10 @@
     <axis
       xyz="1 0 0" />
     <limit
-      lower="-0.08727"
-      upper="0.08727"
+      lower="-0.3490658503988659"
+      upper="0.3490658503988659"
       effort="100"
-      velocity="10" />
+      velocity="5000" />
   </joint>
   <link
     name="Rleg_hip_p">
@@ -375,7 +345,7 @@
         xyz="-0.0065825 -0.038282 -0.019058"
         rpy="0 0 0" />
       <mass
-        value="0.79889" />
+        value="0.8" />
       <inertia
         ixx="0.0016035"
         ixy="-1.5667E-08"
@@ -414,8 +384,8 @@
     <limit
       lower="-1.5708"
       upper="3.1416"
-      effort="100"
-      velocity="10" />
+      effort="250"
+      velocity="5000" />
   </joint>
   <link
     name="Rleg_hip_r">
@@ -424,7 +394,7 @@
         xyz="0.040804 -0.0018825 -0.012645"
         rpy="0 0 0" />
       <mass
-        value="2.2802" />
+        value="2.4" />
       <inertia
         ixx="0.0024443"
         ixy="1.499E-05"
@@ -447,12 +417,6 @@
           rgba="0.75294 0.75294 0.75294 1" />
       </material>
     </visual>
-    <collision>
-      <origin xyz="0.05 0.0 -0.225" rpy="0 0 0"/>
-      <geometry>
-        <cylinder radius="0.05" length="0.2"/>
-      </geometry>
-    </collision>
   </link>
   <joint
     name="Rleg_hip_r_joint"
@@ -470,7 +434,7 @@
       lower="-0.52359"
       upper="0.12217" 
       effort="100"
-      velocity="10" />
+      velocity="5000" />
   </joint>
   <link
     name="Rleg_hip_y">
@@ -479,7 +443,7 @@
         xyz="0.0012764 0.012311 -0.11618"
         rpy="0 0 0" />
       <mass
-        value="4.5154" />
+        value="4.7" />
       <inertia
         ixx="0.0059932"
         ixy="1.1193E-05"
@@ -519,7 +483,7 @@
       lower="-1.2217"
       upper="1.0472"
       effort="100"
-      velocity="10" />
+      velocity="5000" />
   </joint>
   <link
     name="Rleg_knee">
@@ -528,7 +492,7 @@
         xyz="-0.0071953 -0.00012337 -0.15866"
         rpy="0 0 0" />
       <mass
-        value="4.1724" />
+        value="4.4" />
       <inertia
         ixx="0.015917"
         ixy="6.1742E-06"
@@ -551,12 +515,6 @@
           rgba="0.89804 0.91765 0.92941 1" />
       </material>
     </visual>
-    <collision>
-      <origin xyz="0 0 -0.175" rpy="0 0 0"/>
-      <geometry>
-        <cylinder radius="0.05" length="0.25"/>
-      </geometry>
-    </collision>
   </link>
   <joint
     name="Rleg_knee_joint"
@@ -573,8 +531,8 @@
     <limit
       lower="-1.5708"
       upper="0"
-      effort="100"
-      velocity="10" />
+      effort="250"
+      velocity="5000" />
   </joint>
   <link
     name="Rleg_ankle_p">
@@ -583,7 +541,7 @@
         xyz="0.0010341 8.5615E-08 7.218E-08"
         rpy="0 0 0" />
       <mass
-        value="0.15381" />
+        value="0.24" />
       <inertia
         ixx="2.9623E-05"
         ixy="-2.687E-10"
@@ -620,10 +578,10 @@
     <axis
       xyz="0 1 0" />
     <limit
-      lower="-0.6108"
-      upper="0.6108" 
+      lower="-0.6981317007977318"
+      upper="0.6981317007977318"
       effort="100"
-      velocity="10" />
+      velocity="5000" />
   </joint>
   <link
     name="Rleg_ankle_r">
@@ -632,7 +590,7 @@
         xyz="0.021653 -2.4677E-08 -0.044273"
         rpy="0 0 0" />
       <mass
-        value="0.87283" />
+        value="0.88" />
       <inertia
         ixx="0.0012516"
         ixy="-1.0994E-08"
@@ -647,7 +605,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="../meshes/Rleg_ankle_r.STL" />
+          filename="../meshes/whole_foot_visual.stl" />
       </geometry>
       <material
         name="">
@@ -656,27 +614,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.080 0.050 -0.063" rpy="0 0 0"/>
       <geometry>
-        <sphere radius="0.005"/>
-      </geometry>
-    </collision>
-    <collision>
-      <origin xyz="-0.080 -0.050 -0.063" rpy="0 0 0"/>
-      <geometry>
-        <sphere radius="0.005"/>
-      </geometry>
-    </collision>
-    <collision>
-      <origin xyz="0.145 0.050 -0.063" rpy="0 0 0"/>
-      <geometry>
-        <sphere radius="0.005"/>
-      </geometry>
-    </collision>
-    <collision>
-      <origin xyz="0.145 -0.050 -0.063" rpy="0 0 0"/>
-      <geometry>
-        <sphere radius="0.005"/>
+        <mesh
+          filename="../meshes/whole_foot.stl" />
       </geometry>
     </collision>
   </link>
@@ -693,10 +633,10 @@
     <axis
       xyz="1 0 0" />
     <limit
-      lower="-0.08727"
-      upper="0.08727"
+      lower="-0.3490658503988659"
+      upper="0.3490658503988659"
       effort="100"
-      velocity="10" />
+      velocity="5000" />
   </joint>
   <link
     name="Larm_shoulder_p">
@@ -705,7 +645,7 @@
         xyz="-4.1326E-06 0.029486 -0.15771"
         rpy="0 0 0" />
       <mass
-        value="0.8019" />
+        value="0.9" />
       <inertia
         ixx="0.001659"
         ixy="-4.75E-09"
@@ -731,7 +671,7 @@
   </link>
   <joint
     name="Larm_shoulder_p_joint"
-    type="revolute">
+    type="fixed">
     <origin
       xyz="0.0074411 0.17676 0.2503"
       rpy="-3.118E-05 0 0" />
@@ -745,7 +685,7 @@
       lower="-3.1416"
       upper="3.1416"
       effort="100"
-      velocity="10" />
+      velocity="5000" />
   </joint>
   <link
     name="Rarm_shoulder_p">
@@ -754,7 +694,7 @@
         xyz="0.00015217 -0.029574 -0.15842"
         rpy="0 0 0" />
       <mass
-        value="0.80628" />
+        value="0.9" />
       <inertia
         ixx="0.0016592"
         ixy="1.6228E-07"
@@ -780,7 +720,7 @@
   </link>
   <joint
     name="Rarm_shoulder_p_joint"
-    type="revolute">
+    type="fixed">
     <origin
       xyz="0.0074404 -0.17676 0.2503"
       rpy="3.1181E-05 0.0016214 0" />
@@ -794,6 +734,7 @@
       lower="-3.1416"
       upper="3.1416"
       effort="100"
-      velocity="10" />
+      velocity="5000" />
   </joint>
 </robot>
+

@@ -20,3 +20,5 @@ Note:
 
 HHFC has an <mark>IMU whose x-axis is backward and z-axis is downward</mark>. `bitbot-cifx` source code in HHFC is modified to make frontend display the correct orientation of the robot. `bitbot-cifx` in `dependences` folder is the original one.
 
+TODO: Motor bias. Damping controller.
+

@@ -2,7 +2,6 @@
 # MJCF Terrain Generator
 #
 # Reference: https://github.com/unitreerobotics/unitree_mujoco/blob/main/terrain_tool/terrain_generator.py
-#
 # Dknt 2025.5
 
 import xml.etree.ElementTree as xml_et

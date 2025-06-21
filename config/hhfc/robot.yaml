@@ -186,15 +186,15 @@ RobotConfig:
 
     inference:
       # Humanoid-gym based walking
-      # policy_type: "Humanoid"
-      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/apr28_11.onnx"
-      # obs_buffer_size: 15
+      policy_type: "Humanoid"
+      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/policy_msl.onnx"
+      obs_buffer_size: 15
 
       # Humanoid-gym based walking-standing
-      policy_type: "HumanoidStand"
-      stand_threshold: 0.045
-      obs_buffer_size: 15
-      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/150p_stand.onnx"
+      # policy_type: "HumanoidStand"
+      # stand_threshold: 0.045
+      # obs_buffer_size: 15
+      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/150p_stand.onnx"
       # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/faster_stand_3.onnx"
 
       # Agi-gym DH based walking-standing
@@ -208,7 +208,7 @@ RobotConfig:
       log_name: "standing"
 
       device: "CPU"
-      cycle_time: 0.80
+      cycle_time: 0.90
       single_obs_size: 47
       action_size: 12
       action_scale: 0.5
@@ -314,7 +314,7 @@ RobotConfig:
         proj_gravity: 1.0
       clip_action: 18.0
       realtime: true # false
-      stick_to_core: 6
+      stick_to_core: 7
 
       policy_joint_names: *default_policy_joint_names
       policy_default_position: *default_policy_default_position
