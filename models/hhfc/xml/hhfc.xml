@@ -28,7 +28,7 @@
     <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance=".2"/>
   </asset>
 
-  <option timestep="0.001" integrator="RK4">
+  <option timestep="0.0005" integrator="RK4">
     <flag frictionloss="enable" />
   </option>
 

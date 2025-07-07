@@ -38,7 +38,7 @@
     },
     {
       "event": "policy_switch",
-      "kb_key": "2"
+      "kb_key": "$"
     },
     {
       "event": "velo_x_increase",
