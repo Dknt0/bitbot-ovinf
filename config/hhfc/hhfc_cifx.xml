@@ -2,7 +2,6 @@
 <bitbot>
   <backend port="12888" settings_file="./backend.json"/>
   <logger path="../../log/" level="info"/>
-  <logger level="debug"/>
   <bus>
     <device id="0" type="JointElmo" name="RShoulder"
             enable="1" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.134"
