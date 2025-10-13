@@ -185,7 +185,7 @@ RobotConfig:
     decimation: 20
 
     inference:
-      use_absolute_clock: false
+      use_absolute_clock: true
       control_period: 0.01
       # Humanoid-gym based walking
       # policy_type: "Humanoid"
@@ -196,10 +196,7 @@ RobotConfig:
       policy_type: "HumanoidStand"
       stand_threshold: 0.045
       model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/robust_beta.onnx"
-      # obs_buffer_size: 45
-      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/beta_msl.onnx"
       obs_buffer_size: 15
-      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/150p_stand.onnx"
 
       # Agi-gym DH based walking-standing
       # policy_type: "HumanoidStand"
@@ -258,17 +255,19 @@ RobotConfig:
   policy_walking:
     p_gains: *default_p_gains
     d_gains: *default_d_gains
-    decimation: 20
+    decimation: 40
 
     inference:
-      use_absolute_clock: false
-      control_period: 0.01
-      # Humanoid-gym based walking
-      # policy_type: "Humanoid"
-      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/alpha_msl.onnx"
-      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/terrain_alpha.onnx"
-      policy_type: "Epsilon"
-      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/ref_free_2.onnx"
+      use_absolute_clock: true
+      control_period: 0.02
+
+      policy_type: "Locomotion"
+      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/policy_amp.onnx"
+
+      cycle_time: 0.66
+      phase_offset_left: 0.66
+      phase_offset_right: 0.16
+
       obs_buffer_size: 15
 
       log_data: true
@@ -276,9 +275,7 @@ RobotConfig:
       log_name: "walking"
 
       device: "CPU"
-      cycle_time: 0.90
-      # single_obs_size: 47
-      single_obs_size: 45
+      single_obs_size: 47
       action_size: 12
       action_scale: 0.5
       obs_scales:
@@ -302,7 +299,7 @@ RobotConfig:
 
     inference:
       policy_type: "Humanoid"
-      use_absolute_clock: false
+      use_absolute_clock: true
       control_period: 0.01
       # stand_threshold: 0.045
       obs_buffer_size: 15
