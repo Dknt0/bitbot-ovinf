@@ -26,8 +26,8 @@ if(DEPLOY)
   link_directories("/home/dknt/Library/cifx/lib/")
   BitbotAddDependency(
     NAME           bitbot_cifx
-    # FILE_NAME      "bitbot_cifx-main.zip"
-    FILE_NAME      "bitbot_cifx_zdown.zip"
+    FILE_NAME      "bitbot_cifx-main.zip"
+    # FILE_NAME      "bitbot_cifx_zdown.zip"
     FILE_PATH      ${BITBOT_DEPENDENCY_LOCAL_FILE_PATH}
     USE_LOCAL_FILE TRUE
   )

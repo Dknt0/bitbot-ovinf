@@ -14,9 +14,9 @@
 #include "controller/zero_pos.hpp"
 
 #ifdef BITBOT_DEPLOY
-#include "robot/hhfc_cifx/hhfc_cifx_common.h"
-#include "robot/hhfc_cifx/robot_hhfc_cifx.hpp"
-using RobotT = ovinf::RobotHhfcCifx;
+#include "include/fc2_cifx/fc2_cifx_common.h"
+#include "include/fc2_cifx/robot_fc2_cifx.hpp"
+using RobotT = ovinf::RobotFc2Cifx;
 #else
 #include "include/fc2_mj/fc2_mj_common.h"
 #include "include/fc2_mj/robot_fc2_mj.hpp"
