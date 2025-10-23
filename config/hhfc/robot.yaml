@@ -187,22 +187,11 @@ RobotConfig:
     inference:
       use_absolute_clock: true
       control_period: 0.01
-      # Humanoid-gym based walking
-      # policy_type: "Humanoid"
-      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/slope_alpha.onnx"
-      # obs_buffer_size: 15
-
       # Humanoid-gym based walking-standing
       policy_type: "HumanoidStand"
       stand_threshold: 0.045
       model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/robust_beta.onnx"
       obs_buffer_size: 15
-
-      # Agi-gym DH based walking-standing
-      # policy_type: "HumanoidStand"
-      # stand_threshold: 0.045
-      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/dh_test.onnx"
-      # obs_buffer_size: 66
 
       log_data: true
       log_dir: "/home/dknt/Project/bitbot-ovinf/log/policy"
@@ -255,18 +244,18 @@ RobotConfig:
   policy_walking:
     p_gains: *default_p_gains
     d_gains: *default_d_gains
-    decimation: 40
+    decimation: 20
 
     inference:
       use_absolute_clock: true
       control_period: 0.02
 
       policy_type: "Locomotion"
-      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/policy_amp.onnx"
+      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/running_amp.onnx"
 
       cycle_time: 0.66
-      phase_offset_left: 0.66
-      phase_offset_right: 0.16
+      phase_offset_left: 0.72
+      phase_offset_right: 0.22
 
       obs_buffer_size: 15
 
@@ -301,10 +290,8 @@ RobotConfig:
       policy_type: "Humanoid"
       use_absolute_clock: true
       control_period: 0.01
-      # stand_threshold: 0.045
       obs_buffer_size: 15
-      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/fast_stand_4.onnx"
-      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/terrain_alpha.onnx"
+      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/025r_alpha_msl.onnx"
 
       log_data: true
       log_dir: "/home/dknt/Project/bitbot-ovinf/log/policy"
