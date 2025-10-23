@@ -17,7 +17,8 @@
           <geom material='obstacle' condim='3' contype='1' conaffinity='15'/>
       </default>
       <default class='leg_joint_param'>
-          <joint damping="0.1" frictionloss="0.1" armature="0.1"/>
+      <joint damping="0.01" frictionloss="0.01" armature="0.001" />
+          <!-- <joint damping="0.1" frictionloss="0.1" armature="0.1"/> -->
           <!-- <joint damping="0.0" frictionloss="0.0" armature="0.0"/> -->
       </default>
   </default>
@@ -91,7 +92,7 @@
         <body name="Lleg_hip_r" pos="-0.048264 0.063739 -0.039998" quat="1 -1.49194e-05 -1.55901e-05 6.18077e-06">
           <!-- <inertial pos="0.041051 0.0017918 -0.012588" quat="0.794556 0.60374 -0.0545298 0.0347217" mass="2.2937" diaginertia="0.00245553 0.0018219 0.00168278"/> -->
           <inertial pos="0.042398 0.0021906 -0.014152" quat="0.717776 -0.00466495 -0.115772 0.686566" mass="2.4" diaginertia="0.00470642 0.00421976 0.00322592"/>
-          <joint name="Lleg_hip_r_joint" pos="0 0 0" axis="1 0 0" range="-0.12217 0.52359" class="leg_joint_param"/>
+          <joint name="Lleg_hip_r_joint" pos="0 0 0" axis="1 0 0" range="-0.52359 0.52359" class="leg_joint_param"/>
           <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.89804 0.91765 0.92941 1" mesh="Lleg_hip_r"/>
           <geom size="0.05 0.1" pos="0.05 0 -0.225" type="cylinder" rgba="0.89804 0.91765 0.92941 0"/>
 
@@ -141,7 +142,7 @@
         <body name="Rleg_hip_r" pos="-0.048261 -0.063738 -0.039998" quat="1 -1.49194e-05 -1.55901e-05 6.18077e-06">
           <!-- <inertial pos="0.040804 -0.0018825 -0.012645" quat="0.601911 0.796001 -0.0328958 0.0547996" mass="2.2802" diaginertia="0.00245492 0.00182183 0.00168105"/> -->
           <inertial pos="0.042392 -0.0022474 -0.014239" quat="0.688789 -0.114585 -0.00306577 0.715843" mass="2.4" diaginertia="0.00471825 0.00423405 0.00323269"/>
-          <joint name="Rleg_hip_r_joint" pos="0 0 0" axis="1 0 0" range="-0.52359 0.12217" class="leg_joint_param"/>
+          <joint name="Rleg_hip_r_joint" pos="0 0 0" axis="1 0 0" range="-0.52359 0.52359" class="leg_joint_param"/>
           <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.75294 0.75294 0.75294 1" mesh="Rleg_hip_r"/>
           <geom size="0.05 0.1" pos="0.05 0 -0.225" type="cylinder" rgba="0.75294 0.75294 0.75294 0"/>
 
