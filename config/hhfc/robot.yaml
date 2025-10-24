@@ -251,7 +251,8 @@ RobotConfig:
       control_period: 0.02
 
       policy_type: "Locomotion"
-      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/running_amp.onnx"
+      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/running_amp.onnx"
+      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/hhfc/policy_amp.onnx"
 
       cycle_time: 0.66
       phase_offset_left: 0.72
