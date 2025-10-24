@@ -9,9 +9,9 @@ import numpy as np
 import cv2
 import noise
 
-ROOT_PATH = "/home/dknt/Project/bitbot-ovinf/models/hhfc/"
-INPUT_SCENE_PATH = ROOT_PATH + "xml/hhfc.xml"
-OUTPUT_SCENE_PATH = ROOT_PATH + "xml/hhfc_terrain.xml"
+ROOT_PATH = "/home/dknt/Project/bitbot-ovinf/models/fc2/"
+INPUT_SCENE_PATH = ROOT_PATH + "xml/bhr8fc2_pos_lim.xml"
+OUTPUT_SCENE_PATH = ROOT_PATH + "xml/bhr8fc2_pos_lim_terrain.xml"
 HF_IMAGE_PATH = ROOT_PATH + "hf_image/"
 HF_INPUT = HF_IMAGE_PATH + "test.png"
 

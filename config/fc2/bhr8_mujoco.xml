@@ -5,7 +5,7 @@
   <backend port="12888" settings_file="./backend.json"/>
 
   <!-- <mujoco file="../../models/fc2/xml/bhr8fc2.xml"/> -->
-  <mujoco file="../../models/fc2/xml/bhr8fc2_pos_lim.xml"/>
+  <mujoco file="../../models/fc2/xml/bhr8fc2_pos_lim_terrain.xml"/>
   
   <bus>
     <device id="0" type="MujocoJoint" name="lhipYaw" mode="torque"
