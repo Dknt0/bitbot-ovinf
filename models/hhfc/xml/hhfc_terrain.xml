@@ -46,13 +46,13 @@
     <mesh name="Lleg_hip_y" file="Lleg_hip_y.STL" />
     <mesh name="Lleg_knee" file="Lleg_knee.STL" />
     <mesh name="Lleg_ankle_p" file="Lleg_ankle_p.STL" />
-    <mesh name="Lleg_ankle_r" file="whole_foot_visual.stl" />
+    <mesh name="Lleg_ankle_r" file="flat_foot.stl" />
     <mesh name="Rleg_hip_p" file="Rleg_hip_p.STL" />
     <mesh name="Rleg_hip_r" file="Rleg_hip_r.STL" />
     <mesh name="Rleg_hip_y" file="Rleg_hip_y.STL" />
     <mesh name="Rleg_knee" file="Rleg_knee.STL" />
     <mesh name="Rleg_ankle_p" file="Rleg_ankle_p.STL" />
-    <mesh name="Rleg_ankle_r" file="whole_foot_visual.stl" />
+    <mesh name="Rleg_ankle_r" file="flat_foot.stl" />
     <mesh name="Larm_shoulder_p" file="Larm_shoulder_p.STL" />
     <mesh name="Rarm_shoulder_p" file="Rarm_shoulder_p.STL" />
 
