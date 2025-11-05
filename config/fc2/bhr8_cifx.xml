@@ -1,59 +1,132 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <bitbot>
-  <logger path="/home/dknt/Project/bitbot-ovinf/log/" level="info"/>
-
+  <logger path="/home/bhr-fc2/dkntcode/bitbot-ovinf/log/" level="info"/>
   <backend port="12888" settings_file="./backend.json"/>
 
-  <!-- <mujoco file="../../models/fc2/xml/bhr8fc2.xml"/> -->
-  <mujoco file="../../models/fc2/xml/bhr8fc2_pos_lim.xml"/>
-  
-  <bus>
-    <device id="0" type="MujocoJoint" name="lhipYaw" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
-    <device id="1" type="MujocoJoint" name="lhipRoll" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
-    <device id="2" type="MujocoJoint" name="lhipPitch" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
-    <device id="3" type="MujocoJoint" name="lknee" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
-    <device id="4" type="MujocoJoint" name="lankle1" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
-    <device id="5" type="MujocoJoint" name="lankle2" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+  <bus>    
+    <device id="12" type="JointElmo" name="RLeg1"
+            enable="1" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.25"
+            encoder_resolution="262144" transmission_ratio="17.43" calibration_angle="0"
+            current_min="-10" current_max="10" pos_min="-360" pos_max="360"
+    />
+    <device id="13" type="JointElmo" name="RLeg2"
+            enable="1" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.165"
+            encoder_resolution="262144" transmission_ratio="17.43" calibration_angle="0"
+            current_min="-30" current_max="30" pos_min="-360" pos_max="360"
+    />
+    <device id="18" type="JointElmo" name="RLeg3"
+            enable="1" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.25"
+            encoder_resolution="262144" transmission_ratio="17.43" calibration_angle="0"
+            current_min="-25" current_max="25" pos_min="-360" pos_max="360"
+    /> 
+    <device id="14" type="JointElmoPushrod" name="RLeg4"
+            enable="1" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.127"
+            encoder_resolution="262144" transmission_ratio="1" calibration_angle="0"
+            theta0="15.068" lead="0.01" l0="0.225" r0="0.053852" initial_pos="60.152"
+            current_min="-70" current_max="70" pos_min="-360" pos_max="360"
+    />
+    <device id="15" type="JointElmoPushrod" name="RLeg5"
+            enable="1" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.094"
+            encoder_resolution="262144" transmission_ratio="1" calibration_angle="0"
+            theta0="34.5" lead="0.005" l0="0.2" r0="0.04" initial_pos="64.9" offset_pos="90"
+            current_min="-10" current_max="10" pos_min="-360" pos_max="360"
+    /> 
+    <device id="16" type="JointElmo" name="RLeg6"
+            enable="1" mode="CST" motor_direction="1" torque_direction="1"
+            encoder_resolution="131072" transmission_ratio="16" calibration_angle="0"
+            torque_constant="0.139"
+            current_min="-10" current_max="10" pos_min="-100" pos_max="100"
+    />  
+    <device id="11" type="JointElmo" name="LLeg1"
+            enable="1" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.25"
+            encoder_resolution="262144" transmission_ratio="17.43" calibration_angle="0"
+            current_min="-10" current_max="10" pos_min="-360" pos_max="360"
+    /> 
+    <device id="10" type="JointElmo" name="LLeg2"
+            enable="1" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.165"
+            encoder_resolution="262144" transmission_ratio="17.43" calibration_angle="0"
+            current_min="-30" current_max="30" pos_min="-360" pos_max="360"
+    />
+    <device id="19" type="JointElmo" name="LLeg3"
+            enable="1" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.25"
+            encoder_resolution="262144" transmission_ratio="17.43" calibration_angle="0"
+            current_min="-25" current_max="25" pos_min="-360" pos_max="360"
+    />
+    <device id="20" type="JointElmoPushrod" name="LLeg4"
+            enable="1" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.127"
+            encoder_resolution="262144" transmission_ratio="1" calibration_angle="0"
+            theta0="15.068" lead="0.01" l0="0.225" r0="0.053852" initial_pos="60.152"
+            current_min="-70" current_max="70" pos_min="-360" pos_max="360"
+    /> 
+    <device id="22" type="JointElmoPushrod" name="LLeg5"
+            enable="1" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.094"
+            encoder_resolution="262144" transmission_ratio="1" calibration_angle="0"
+            theta0="34.5" lead="0.005" l0="0.2" r0="0.04" initial_pos="64.9" offset_pos="90"
+            current_min="-10" current_max="10" pos_min="-360" pos_max="360"
+    />
+    <device id="21" type="JointElmo" name="LLeg6"
+            enable="1" mode="CST" motor_direction="1" torque_direction="1"
+            encoder_resolution="131072" transmission_ratio="16" calibration_angle="0"
+            torque_constant="0.139"
+            current_min="-10" current_max="10" pos_min="-100" pos_max="100"
+    />   
 
-    <device id="6" type="MujocoJoint" name="rhipYaw" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
-    <device id="7" type="MujocoJoint" name="rhipRoll" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
-    <device id="8" type="MujocoJoint" name="rhipPitch" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
-    <device id="9" type="MujocoJoint" name="rknee" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
-    <device id="10" type="MujocoJoint" name="rankle1" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
-    <device id="11" type="MujocoJoint" name="rankle2" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="6" type="JointElmo" name="RArm1"
+            enable="0" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.25"
+            encoder_resolution="262144" transmission_ratio="17.43" calibration_angle="0"
+            current_min="-20" current_max="20" pos_min="-360" pos_max="360"
+    />
+    <device id="2" type="JointElmo" name="RArm2"
+            enable="0" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.25"
+            encoder_resolution="262144" transmission_ratio="17.43" calibration_angle="0"
+            current_min="-10" current_max="10" pos_min="-360" pos_max="360"
+    />
+    <device id="1" type="JointElmo" name="RArm3"
+            enable="0" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.25"
+            encoder_resolution="262144" transmission_ratio="17.43" calibration_angle="0"
+            current_min="-10" current_max="10" pos_min="-360" pos_max="360"
+    /> 
+    <device id="5" type="JointElmoPushrod" name="RArm4"
+            enable="0" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.127"
+            encoder_resolution="262144" transmission_ratio="1" calibration_angle="0"
+            theta0="40.0" lead="0.005" l0="0.193" r0="0.034" initial_pos="65.01"
+            current_min="-25" current_max="25" pos_min="-360" pos_max="360"
+    />
 
-    <device id="12" type="MujocoJoint" name="lshoulderPitch" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
-    <device id="13" type="MujocoJoint" name="lshoulderRoll" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
-    <device id="14" type="MujocoJoint" name="lshoulderYaw" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
-    <device id="15" type="MujocoJoint" name="lelbow" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="7" type="JointElmo" name="LArm1"
+            enable="0" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.25"
+            encoder_resolution="262144" transmission_ratio="17.43" calibration_angle="0"
+            current_min="-20" current_max="20" pos_min="-360" pos_max="360"
+    />
+    <device id="3" type="JointElmo" name="LArm2"
+            enable="0" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.25"
+            encoder_resolution="262144" transmission_ratio="17.43" calibration_angle="0"
+            current_min="-10" current_max="10" pos_min="-360" pos_max="360"
+    />
+    <device id="4" type="JointElmo" name="LArm3"
+            enable="0" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.25"
+            encoder_resolution="262144" transmission_ratio="17.43" calibration_angle="0"
+            current_min="-10" current_max="10" pos_min="-360" pos_max="360"
+    /> 
+    <device id="0" type="JointElmoPushrod" name="LArm4"
+            enable="0" mode="CST" motor_direction="1" torque_direction="1" torque_constant="0.127"
+            encoder_resolution="262144" transmission_ratio="1" calibration_angle="0"
+            theta0="40.0" lead="0.005" l0="0.193" r0="0.034" initial_pos="65.01"
+            current_min="-25" current_max="25" pos_min="-360" pos_max="360"
+    />
 
-    <device id="16" type="MujocoJoint" name="rshoulderPitch" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
-    <device id="17" type="MujocoJoint" name="rshoulderRoll" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
-    <device id="18" type="MujocoJoint" name="rshoulderYaw" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
-    <device id="19" type="MujocoJoint" name="relbow" mode="torque"
-            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
 
-    <device id="20" type="MujocoImu" name="imu"
-      site="imu" acc="linear-acceleration" gyro="angular-velocity"/>
+    <device id="8" type="ImuMti300" name="mti300"/>
 
+    <device id="17" type="ForceSri6d" name="RFoot"
+            force_y_axis="0 -1 0" force_z_axis="0 0 -1"
+            torque_y_axis="0 -1 0" torque_z_axis="0 0 -1"
+    />
+    <device id="23" type="ForceSri6d" name="LFoot"
+            force_y_axis="0 -1 0" force_z_axis="0 0 -1"
+            torque_y_axis="0 -1 0" torque_z_axis="0 0 -1"
+    />
   </bus>
+
 </bitbot>
+

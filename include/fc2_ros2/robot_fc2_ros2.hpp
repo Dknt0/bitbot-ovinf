@@ -1,27 +1,27 @@
-#ifndef ROBOT_FC2_CIFX_HPP
-#define ROBOT_FC2_CIFX_HPP
+#ifndef ROBOT_FC2_ROS2_HPP
+#define ROBOT_FC2_ROS2_HPP
 
 #include <filesystem>
 #include <vector>
 
-#include "fc2_cifx_common.h"
+#include "fc2_ros2_common.h"
 #include "filter/filter_factory.hpp"
 #include "robot/base/robot_base.hpp"
 #include "utils/csv_logger.hpp"
 
 namespace ovinf {
 
-class RobotFc2Cifx : public RobotBase<float> {
+class RobotFc2Ros2 : public RobotBase<float> {
   using VectorT = Eigen::Matrix<float, Eigen::Dynamic, 1>;
 
  public:
-  using Ptr = std::shared_ptr<RobotFc2Cifx>;
+  using Ptr = std::shared_ptr<RobotFc2Ros2>;
 
  private:
-  class ObserverFc2Cifx : public ObserverBase {
+  class ObserverFc2Ros2 : public ObserverBase {
    public:
-    ObserverFc2Cifx() = delete;
-    ObserverFc2Cifx(RobotBase<float>* robot, const YAML::Node& config)
+    ObserverFc2Ros2() = delete;
+    ObserverFc2Ros2(RobotBase<float>* robot, const YAML::Node& config)
         : ObserverBase(robot, config) {
       // Create Filter
       motor_pos_filter_ =
@@ -40,7 +40,7 @@ class RobotFc2Cifx : public RobotBase<float> {
     }
 
     virtual bool Update() final {
-      auto robot_cifx = dynamic_cast<RobotFc2Cifx*>(robot_);
+      auto robot_cifx = dynamic_cast<RobotFc2Ros2*>(robot_);
 
       // Get motor posision and velocity
       for (size_t i = 0; i < motor_size_; ++i) {
@@ -106,14 +106,14 @@ class RobotFc2Cifx : public RobotBase<float> {
     CsvLogger::Ptr csv_logger_;
   };
 
-  class ExecutorFc2Cifx : public ExecutorBase {
+  class ExecutorFc2Ros2 : public ExecutorBase {
    public:
-    ExecutorFc2Cifx() = delete;
-    ExecutorFc2Cifx(RobotBase<float>* robot, const YAML::Node& config)
+    ExecutorFc2Ros2() = delete;
+    ExecutorFc2Ros2(RobotBase<float>* robot, const YAML::Node& config)
         : ExecutorBase(robot, config) {}
 
     virtual bool ExecuteJointTorque() final {
-      auto robot_cifx = dynamic_cast<RobotFc2Cifx*>(robot_);
+      auto robot_cifx = dynamic_cast<RobotFc2Ros2*>(robot_);
       motor_target_position_ = joint_target_position_;
       motor_target_torque_ = joint_target_torque_;
 
@@ -122,7 +122,7 @@ class RobotFc2Cifx : public RobotBase<float> {
     }
 
     virtual bool ExecuteMotorTorque() final {
-      auto robot_cifx = dynamic_cast<RobotFc2Cifx*>(robot_);
+      auto robot_cifx = dynamic_cast<RobotFc2Ros2*>(robot_);
       for (size_t i = 0; i < motor_size_; ++i) {
         // Torque limit
         if (motor_target_torque_[i] > torque_limit_[i]) {
@@ -160,12 +160,12 @@ class RobotFc2Cifx : public RobotBase<float> {
   };
 
  public:
-  RobotFc2Cifx() = delete;
-  RobotFc2Cifx(const YAML::Node& config) : RobotBase(config) {
+  RobotFc2Ros2() = delete;
+  RobotFc2Ros2(const YAML::Node& config) : RobotBase(config) {
     motors_.resize(motor_size_);
-    this->observer_ = std::make_shared<ObserverFc2Cifx>((RobotBase<float>*)this,
+    this->observer_ = std::make_shared<ObserverFc2Ros2>((RobotBase<float>*)this,
                                                         config["observer"]);
-    this->executor_ = std::make_shared<ExecutorFc2Cifx>((RobotBase<float>*)this,
+    this->executor_ = std::make_shared<ExecutorFc2Ros2>((RobotBase<float>*)this,
                                                         config["executor"]);
   }
 
@@ -205,7 +205,7 @@ class RobotFc2Cifx : public RobotBase<float> {
   Kernel::ExtraData* extra_data_;
 };
 
-void RobotFc2Cifx::GetDevice(const KernelBus& bus) {
+void RobotFc2Ros2::GetDevice(const KernelBus& bus) {
   // TODO:
   motors_[LHipYawMotor] = bus.GetDevice<ElmoDevice>(11).value();
   motors_[LHipRollMotor] = bus.GetDevice<ElmoDevice>(10).value();
@@ -246,7 +246,7 @@ void RobotFc2Cifx::GetDevice(const KernelBus& bus) {
   imu_ = bus.GetDevice<ImuDevice>(8).value();
 }
 
-void RobotFc2Cifx::ObserverFc2Cifx::CreateLog(YAML::Node const& config) {
+void RobotFc2Ros2::ObserverFc2Ros2::CreateLog(YAML::Node const& config) {
   auto now = std::chrono::system_clock::now();
   std::time_t now_time = std::chrono::system_clock::to_time_t(now);
   std::tm* now_tm = std::localtime(&now_time);
@@ -333,7 +333,7 @@ void RobotFc2Cifx::ObserverFc2Cifx::CreateLog(YAML::Node const& config) {
   csv_logger_ = std::make_shared<CsvLogger>(logger_file, headers);
 }
 
-void RobotFc2Cifx::ObserverFc2Cifx::WriteLog() {
+void RobotFc2Ros2::ObserverFc2Ros2::WriteLog() {
   std::vector<CsvLogger::Number> datas;
 
   // Motor actual pos
@@ -401,4 +401,4 @@ void RobotFc2Cifx::ObserverFc2Cifx::WriteLog() {
 
 }  // namespace ovinf
 
-#endif  // !ROBOT_FC2_CIFX_HPP
+#endif  // !ROBOT_FC2_ROS2_HPP

@@ -1,5 +1,5 @@
-#ifndef FC2_CIFX_COMMON_HPP
-#define FC2_CIFX_COMMON_HPP
+#ifndef FC2_ROS2_COMMON_HPP
+#define FC2_ROS2_COMMON_HPP
 
 #include "bitbot_cifx/device/imu_mti300.h"
 #include "bitbot_cifx/device/joint_elmo.h"
@@ -79,4 +79,4 @@ struct UserData {};
 
 using Kernel = bitbot::CifxKernel<UserData>;
 
-#endif  // !FC2_CIFX_COMMON_HPP
+#endif  // !FC2_ROS2_COMMON_HPP

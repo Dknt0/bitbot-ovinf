@@ -18,9 +18,15 @@
 #include "include/fc2_cifx/robot_fc2_cifx.hpp"
 using RobotT = ovinf::RobotFc2Cifx;
 #else
+#ifdef BITBOT_ROS2
+#include "include/fc2_ros2/fc2_ros2_common.h"
+#include "include/fc2_ros2/robot_ros2_cifx.hpp"
+using RobotT = ovinf::RobotFc2Ros2;
+#else
 #include "include/fc2_mj/fc2_mj_common.h"
 #include "include/fc2_mj/robot_fc2_mj.hpp"
 using RobotT = ovinf::RobotFc2Mj;
+#endif
 #endif  // BITBOT_DEOPLOY
 
 enum Events {

@@ -31,6 +31,9 @@ if(DEPLOY)
     FILE_PATH      ${BITBOT_DEPENDENCY_LOCAL_FILE_PATH}
     USE_LOCAL_FILE TRUE
   )
+  find_package(PkgConfig REQUIRED)
+  pkg_check_modules(LIBNL REQUIRED libnl-3.0)
+  pkg_check_modules(LIBNL_ROUTE REQUIRED libnl-route-3.0)
 else()
   BitbotAddDependency(
     NAME           bitbot_mujoco
@@ -68,6 +71,9 @@ if(DEPLOY)
     BitbotCifx
     BitbotKernel
     ovinf
+    ${LIBNL_LIBRARIES}
+    "/lib/x86_64-linux-gnu/libnl-cli-3.so"
+    ${LIBNL_ROUTE_LIBRARIES}
   )
 else()
   target_link_libraries(main_app
