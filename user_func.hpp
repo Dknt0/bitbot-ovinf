@@ -10,17 +10,11 @@
 #include <memory>
 
 #include "controller/init_pos.hpp"
-#include "controller/policy_controller.hpp"
+#include "ovinf/controller/policy_controller.hpp"
 
-#ifdef BITBOT_DEPLOY
-#include "robot/hhfc_cifx/hhfc_cifx_common.h"
-#include "robot/hhfc_cifx/robot_hhfc_cifx.hpp"
-using RobotT = ovinf::RobotHhfcCifx;
-#else
-#include "robot/hhfc_mj/hhfc_mj_common.h"
-#include "robot/hhfc_mj/robot_hhfc_mj.hpp"
-using RobotT = ovinf::RobotHhfcMj;
-#endif  // BITBOT_DEPLOY
+#include "ovinf/robot/booster_mj_common.h"
+#include "ovinf/robot/robot_booster_mj.hpp"
+using RobotT = ovinf::RobotBoosterMj;
 
 enum Events {
   InitPose = 1001,
