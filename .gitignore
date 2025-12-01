@@ -2,4 +2,3 @@ build
 .cache
 log
 checkpoint/*
-include
