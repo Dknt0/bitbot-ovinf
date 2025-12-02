@@ -275,7 +275,7 @@ RobotConfig:
       log_dir: "/home/dknt/Project/bitbot-ovinf/log/policy"
       log_name: "standing"
 
-      device: "CPU"
+      device: "NPU"
       cycle_time: 0.90
       single_obs_size: 47
       action_size: 12
