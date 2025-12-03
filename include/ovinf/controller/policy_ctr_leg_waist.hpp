@@ -29,6 +29,8 @@ class PolicyCtrLegWaist : public PolicyControllerBase {
            .joint_vel =
                robot_->Observer()->JointActualVelocity().segment(10, 13)});
     }
+    policy_target_position_ = robot_->Executor()->JointTargetPosition();
+    // target_pos_filter_->Filter(policy_target_position_);
     // inference_net_->PrintInfo();
   }
 
@@ -36,6 +38,8 @@ class PolicyCtrLegWaist : public PolicyControllerBase {
     counter_ = 0;
     command_ = VectorT::Zero(3);
     ready_ = true;
+    target_pos_filter_->Reset();
+    policy_target_position_ = robot_->Executor()->JointTargetPosition();
   }
 
   virtual void Step(bool set_target = true) final {
@@ -59,15 +63,17 @@ class PolicyCtrLegWaist : public PolicyControllerBase {
       auto target_pos = inference_net_->GetResult();
       if (target_pos.has_value()) {
         for (size_t i = 10; i < 23; i++) {
-          robot_->Executor()->JointTargetPosition()[i] =
-              target_pos.value()[i - 10];
+          policy_target_position_[i] = target_pos.value()[i - 10];
         }
         for (size_t i = 0; i < 10; i++) {
-          robot_->Executor()->JointTargetPosition()[i] = default_position_[i];
+          policy_target_position_[i] = default_position_[i];
         }
       } else {
         // std::cout << "target pos is empty" << std::endl;
       }
+
+      robot_->Executor()->JointTargetPosition() =
+          target_pos_filter_->Filter(policy_target_position_);
       ComputeJointPd();
     }
   }

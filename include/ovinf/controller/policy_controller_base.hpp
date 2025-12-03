@@ -4,7 +4,7 @@
 #include <chrono>
 
 #include "controller/controller_base.hpp"
-#include "filter/filter_mean.hpp"
+#include "filter/filter_factory.hpp"
 #include "ovinf/ovinf_factory.hpp"
 
 namespace ovinf {
@@ -23,6 +23,9 @@ class PolicyControllerBase : public ControllerBase<float> {
     p_gains_ = VectorT::Zero(robot_->joint_size_);
     d_gains_ = VectorT::Zero(robot_->joint_size_);
     default_position_ = VectorT::Zero(robot_->joint_size_);
+
+    target_pos_filter_ =
+        FilterFactory::CreateFilter(config["target_pos_filter"]);
 
     for (auto const& pair : robot_->joint_names_) {
       p_gains_(pair.second) = config["p_gains"][pair.first].as<float>();
@@ -47,6 +50,10 @@ class PolicyControllerBase : public ControllerBase<float> {
   size_t counter_ = 0;
   VectorT default_position_;
   ovinf::BasePolicy<float>::BasePolicyPtr inference_net_;
+
+  // Target filter
+  FilterBase<VectorT>::Ptr target_pos_filter_;
+  VectorT policy_target_position_;
 };
 
 }  // namespace ovinf
