@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bitbot>
+  <logger path="../../log/" level="info"/>
+
+  <backend port="12888" settings_file="./backend.json"/>
+
+  <mujoco file="../../models/efc/mjcf/efc.xml"/>
+  
+  <bus>
+    <device id="0" type="MujocoJoint" name="left_hip_pitch_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="1" type="MujocoJoint" name="left_hip_roll_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="2" type="MujocoJoint" name="left_hip_yaw_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="3" type="MujocoJoint" name="left_knee_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="4" type="MujocoJoint" name="left_ankle_pitch_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="5" type="MujocoJoint" name="left_ankle_roll_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+
+    <device id="6" type="MujocoJoint" name="right_hip_pitch_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="7" type="MujocoJoint" name="right_hip_roll_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="8" type="MujocoJoint" name="right_hip_yaw_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="9" type="MujocoJoint" name="right_knee_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="10" type="MujocoJoint" name="right_ankle_pitch_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="11" type="MujocoJoint" name="right_ankle_roll_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+
+    <device id="12" type="MujocoJoint" name="waist_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+
+    <device id="13" type="MujocoJoint" name="left_shoulder_pitch_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="14" type="MujocoJoint" name="left_shoulder_roll_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="15" type="MujocoJoint" name="left_shoulder_yaw_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="16" type="MujocoJoint" name="left_elbow_pitch_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="17" type="MujocoJoint" name="left_elbow_yaw_joint" mode="torque"
+      pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+
+    <device id="18" type="MujocoJoint" name="right_shoulder_pitch_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="19" type="MujocoJoint" name="right_shoulder_roll_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="20" type="MujocoJoint" name="right_shoulder_yaw_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="21" type="MujocoJoint" name="right_elbow_pitch_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+    <device id="22" type="MujocoJoint" name="right_elbow_yaw_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+
+    <device id="23" type="MujocoJoint" name="head_joint" mode="torque"
+            pos_kp='0' pos_kd='0' pos_ki='0' vel_kp='0' vel_kd='0'/>
+
+    <device id="24" type="MujocoImu" name="imu"
+      site="imu" acc="linear-acceleration" gyro="angular-velocity"/>
+    <device id="25" type="MujocoFramepos" name="imu_pos" />
+    <device id="26" type="MujocoFramelinvel" name="imu_linvel" />
+  </bus>
+</bitbot>

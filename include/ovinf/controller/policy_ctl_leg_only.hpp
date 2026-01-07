@@ -25,9 +25,9 @@ class PolicyCtrLegOnly : public PolicyControllerBase {
            .ang_vel = robot_->Observer()->AngularVelocity(),
            .proj_gravity = robot_->Observer()->ProjGravity(),
            .joint_pos =
-               robot_->Observer()->JointActualPosition().segment(11, 12),
+               robot_->Observer()->JointActualPosition().segment(0, 12),
            .joint_vel =
-               robot_->Observer()->JointActualVelocity().segment(11, 12)});
+               robot_->Observer()->JointActualVelocity().segment(0, 12)});
     }
     policy_target_position_ = robot_->Executor()->JointTargetPosition();
     // target_pos_filter_->Filter(policy_target_position_);
@@ -54,18 +54,18 @@ class PolicyCtrLegOnly : public PolicyControllerBase {
            .ang_vel = robot_->Observer()->AngularVelocity(),
            .proj_gravity = robot_->Observer()->ProjGravity(),
            .joint_pos =
-               robot_->Observer()->JointActualPosition().segment(11, 12),
+               robot_->Observer()->JointActualPosition().segment(0, 12),
            .joint_vel =
-               robot_->Observer()->JointActualVelocity().segment(11, 12)});
+               robot_->Observer()->JointActualVelocity().segment(0, 12)});
     }
 
     if (set_target) {
       auto target_pos = inference_net_->GetResult();
       if (target_pos.has_value()) {
-        for (size_t i = 11; i < 23; i++) {
-          policy_target_position_[i] = target_pos.value()[i - 11];
+        for (size_t i = 0; i < 12; i++) {
+          policy_target_position_[i] = target_pos.value()[i];
         }
-        for (size_t i = 0; i < 11; i++) {
+        for (size_t i = 12; i < 24; i++) {
           policy_target_position_[i] = default_position_[i];
         }
       } else {
