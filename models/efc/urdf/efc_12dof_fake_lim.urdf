@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <robot
   name="sr02h_v1">
+  <mujoco>
+    <compiler meshdir="../meshes/" balanceinertia="true" discardvisual="false"/>
+  </mujoco>
   <link
     name="base_link">
     <inertial>
@@ -240,14 +243,14 @@
         xyz="0.00113044560504644 0.0 -0.00399754920790896"
         rpy="0 0 0" />
       <mass
-        value="0.0822317248177105" />
+        value="0.2" />
       <inertia
-        ixx="0.0000188"
-        ixy="0.0000000"
-        ixz="0.0000012"
-        iyy="0.0000105"
-        iyz="-0.0000001"
-        izz="0.0000149" />
+        ixx="2.9623E-05"
+        ixy="-2.687E-10"
+        ixz="-5.7763E-10"
+        iyy="2.6222E-05"
+        iyz="8.9807E-10"
+        izz="4.3137E-05" />
     </inertial>
     <visual>
       <origin
@@ -293,7 +296,7 @@
         rpy="0.0 0 0.0" />
       <mass
         value="0.528201582069976" />
-      <inertia ixx="0.001028" ixy="0.000000" ixz="0.000622" iyy="0.006055" iyz="0.000000" izz="0.006240" />
+      <inertia ixx="0.001028" ixy="0.000000" ixz="0.000622" iyy="0.003055" iyz="0.000000" izz="0.003240" />
       <!-- <inertia -->
       <!--   ixx="0.0014795" -->
       <!--   ixy="0.0000005" -->
@@ -553,14 +556,14 @@
         xyz="0.00111916308668597 0.0 -0.00395617997248809"
         rpy="0 0 0" />
       <mass
-        value="0.0830607206768232" />
+        value="0.2" />
       <inertia
-        ixx="0.0000193"
-        ixy="0.0000000"
-        ixz="0.0000013"
-        iyy="0.0000105"
-        iyz="0.0000000"
-        izz="0.0000156" />
+        ixx="2.9623E-05"
+        ixy="-2.687E-10"
+        ixz="5.7763E-10"
+        iyy="2.6222E-05"
+        iyz="-8.9807E-10"
+        izz="4.3137E-05" />
     </inertial>
     <visual>
       <origin
@@ -605,7 +608,7 @@
         rpy="0 0 0" />
       <mass
         value="0.511083104121839" />
-      <inertia ixx="0.001028" ixy="0.000000" ixz="0.000622" iyy="0.006055" iyz="0.000000" izz="0.006240" />
+      <inertia ixx="0.001028" ixy="0.000000" ixz="0.000622" iyy="0.003055" iyz="0.000000" izz="0.003240" />
       <!-- <inertia -->
       <!--   ixx="0.0003872" -->
       <!--   ixy="0.0000003" -->
@@ -752,7 +755,7 @@
     type="fixed">
     <origin
       xyz="0 0.1665 0.2571"
-      rpy="0 -0.060291 0" />
+      rpy="0 0.0 0" />
     <parent
       link="waist_link" />
     <child
@@ -999,7 +1002,7 @@
     type="fixed">
     <origin
       xyz="0 -0.1665 0.2571"
-      rpy="0 -0.060291 0" />
+      rpy="0 0.0 0" />
       <!-- rpy="-0.087266 -0.00043798 0" /> -->
     <parent
       link="waist_link" />
@@ -1271,3 +1274,4 @@
   </joint>
 
 </robot>
+
