@@ -95,7 +95,7 @@
               <joint name="left_ankle_pitch_joint" pos="0 0 0" axis="0 1 0" range="-0.92 0.61" actuatorfrcrange="-200 200"/>
               <geom type="mesh" class="visual" mesh="left_ankle_pitch"/>
               <body name="left_ankle_roll_link" pos="0 0 -0.016">
-                <inertial pos="0.006 -2.45147e-05 -0.0216902" quat="0 0.791631 0 0.610999" mass="0.528202" diaginertia="0.00340291 0.003055 0.000865095"/>
+                <inertial pos="0.021653 -2.4677E-08 -0.044273" quat="1.13655e-06 0.717415 -1.10364e-06 0.696646" mass="0.528202" diaginertia="0.00340291 0.003055 0.000865095"/>
                 <joint name="left_ankle_roll_joint" pos="0 0 0" axis="1 0 0" range="-0.8 0.8" actuatorfrcrange="-200 200"/>
                 <geom type="mesh" class="visual" mesh="left_ankle_roll"/>
                 <geom type="mesh" class="collision" mesh="left_ankle_roll"/>
@@ -127,7 +127,7 @@
               <joint name="right_ankle_pitch_joint" pos="0 0 0" axis="0 1 0" range="-0.92 0.61" actuatorfrcrange="-200 200"/>
               <geom type="mesh" class="visual" mesh="right_ankle_pitch"/>
               <body name="right_ankle_roll_link" pos="0 0 -0.015999">
-                <inertial pos="0.006 4.08735e-06 -0.0228856" quat="0 0.791631 0 0.610999" mass="0.511083" diaginertia="0.00340291 0.003055 0.000865095"/>
+                <inertial pos="0.021653 -2.4677E-08 -0.044273" quat="1.13655e-06 0.717415 -1.10364e-06 0.696646" mass="0.511083" diaginertia="0.00340291 0.003055 0.000865095"/>
                 <joint name="right_ankle_roll_joint" pos="0 0 0" axis="1 0 0" range="-0.8 0.8" actuatorfrcrange="-200 200"/>
                 <geom type="mesh" class="visual" mesh="right_ankle_roll"/>
                 <geom type="mesh" class="collision" mesh="right_ankle_roll"/>
