@@ -274,7 +274,7 @@ RobotConfig:
     d_gains: *default_d_gains
 
   policy_standing:
-    controller_type: "LEG_ONLY"
+    controller_type: "LEG_WAIST"
     p_gains: *default_p_gains
     d_gains: *default_d_gains
     default_position: *defult_init_pos
@@ -298,12 +298,12 @@ RobotConfig:
                     -50,
                    ]
       alpha: [
-              0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
-              0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 
-              0.5,
-              0.5, 0.5, 0.5, 0.5, 0.5,
-              0.5, 0.5, 0.5, 0.5, 0.5,
-              0.5,
+              0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
+              0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 
+              0.8,
+              0.8, 0.8, 0.8, 0.8, 0.8,
+              0.8, 0.8, 0.8, 0.8, 0.8,
+              0.8,
              ]
 
     inference:
@@ -311,7 +311,7 @@ RobotConfig:
       use_absolute_clock: true
       control_period: 0.01
       stand_threshold: 0.045
-      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/policy_msl.onnx"
+      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/beta_13dof.onnx"
       obs_buffer_size: 15
 
       log_data: true
@@ -320,8 +320,8 @@ RobotConfig:
 
       device: "CPU"
       cycle_time: 0.90
-      single_obs_size: 47
-      action_size: 12
+      single_obs_size: 50
+      action_size: 13
       action_scale: 0.5
       obs_scales:
         ang_vel: 1.0
@@ -347,6 +347,7 @@ RobotConfig:
         - "r_knee"
         - "r_ankle_p"
         - "r_ankle_r"
+        - "waist_y"
       policy_default_position: &default_policy_default_position
         l_hip_p: -0.3
         l_hip_r: 0.0
@@ -360,6 +361,7 @@ RobotConfig:
         r_knee: 0.6
         r_ankle_p: -0.3
         r_ankle_r: 0.0
+        waist_y: 0.0
 
   policy_walking:
     controller_type: "LEG_WAIST"
@@ -374,9 +376,7 @@ RobotConfig:
       use_absolute_clock: true
       control_period: 0.01
       stand_threshold: 0.045
-      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/policy_msl_13dof.onnx"
       model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/beta_13dof.onnx"
-      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/policy_msl.onnx"
       obs_buffer_size: 15
 
       log_data: true
@@ -440,8 +440,8 @@ RobotConfig:
       policy_type: "Epsilon"
       use_absolute_clock: true
       control_period: 0.01
-      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_msl.onnx"
-      obs_buffer_size: 10
+      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_8.onnx"
+      obs_buffer_size: 15
 
       log_data: true
       log_dir: "/home/dknt/Project/bitbot-ovinf/log/policy"
@@ -450,7 +450,7 @@ RobotConfig:
       device: "CPU"
       single_obs_size: 72
       action_size: 21
-      action_scale: 0.25
+      action_scale: 0.5
       obs_scales:
         ang_vel: 1.0
         lin_vel: 2.0
@@ -498,15 +498,15 @@ RobotConfig:
         r_ankle_p: -0.15
         r_ankle_r: 0
         waist_y: 0
-        l_shoulder_p: 0.1
-        l_shoulder_r: 0
+        l_shoulder_p: 0.3
+        l_shoulder_r: 0.1
         l_shoulder_y: 0
-        l_elbow_p: -0.1
+        l_elbow_p: -0.8
         l_elbow_y: 0
-        r_shoulder_p: 0.1
-        r_shoulder_r: 0
+        r_shoulder_p: 0.3
+        r_shoulder_r: -0.1
         r_shoulder_y: 0
-        r_elbow_p: -0.1
+        r_elbow_p: -0.8
         r_elbow_y: 0
         head_y: 0
 
