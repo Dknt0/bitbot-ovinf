@@ -5,6 +5,7 @@
 
 #include "filter/filter_mean.hpp"
 #include "policy_controller_base.hpp"
+#include "utils/history_buffer.hpp"
 
 namespace ovinf {
 
@@ -25,6 +26,14 @@ class PolicyCtrAuto : public PolicyControllerBase {
       size_t joint_idx = robot_->joint_names_.at(joint_name);
       policy_joint_idx_map_[i] = joint_idx;
     }
+
+    if (config["num_delay"].IsDefined()) {
+      num_delay_ = config["num_delay"].as<size_t>();
+    } else {
+      num_delay_ = 0;
+    }
+    delay_buffer_ = std::make_shared<HistoryBuffer<float>>(robot_->joint_size_,
+                                                           num_delay_ + 1);
   }
 
   virtual void WarmUp() final {
@@ -95,9 +104,15 @@ class PolicyCtrAuto : public PolicyControllerBase {
         // std::cout << "target pos is empty" << std::endl;
       }
 
+      delay_buffer_->AddObservation(
+          target_pos_filter_->Filter(policy_target_position_));
       robot_->Executor()->JointTargetPosition() =
-          target_pos_filter_->Filter(policy_target_position_);
+          delay_buffer_->GetObservation(num_delay_);
+
       ComputeJointPd();
+
+      robot_->Executor()->JointTargetPosition() =
+          delay_buffer_->GetObservation(0);
     }
   }
 
@@ -109,6 +124,10 @@ class PolicyCtrAuto : public PolicyControllerBase {
  private:
   size_t action_size_ = 0;
   std::map<size_t, size_t> policy_joint_idx_map_;
+
+  // Delay test
+  std::shared_ptr<HistoryBuffer<float>> delay_buffer_ = nullptr;
+  size_t num_delay_ = 0;
 };
 
 }  // namespace ovinf
