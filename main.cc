@@ -2,8 +2,8 @@
 
 int main(int argc, char const *argv[]) {
   MakeBitbotEverywhere everyone(
-      "/home/dknt/Project/bitbot-ovinf/config/hhfc/hhfc_mj.xml",
-      "/home/dknt/Project/bitbot-ovinf/config/hhfc/robot.yaml");
+      "/home/dknt/Project/bitbot-ovinf/config/efc/efc_mj.xml",
+      "/home/dknt/Project/bitbot-ovinf/config/efc/robot.yaml");
   everyone.WillMake();
   everyone.BeMaking();
   everyone.HaveMade();
