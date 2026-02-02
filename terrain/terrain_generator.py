@@ -9,9 +9,9 @@ import numpy as np
 import cv2
 import noise
 
-ROOT_PATH = "/home/dknt/Project/bitbot-ovinf/models/hhfc/"
-INPUT_SCENE_PATH = ROOT_PATH + "xml/hhfc.xml"
-OUTPUT_SCENE_PATH = ROOT_PATH + "xml/hhfc_terrain.xml"
+ROOT_PATH = "/home/dknt/Project/bitbot-ovinf/models/efc/"
+INPUT_SCENE_PATH = ROOT_PATH + "mjcf/efc.xml"
+OUTPUT_SCENE_PATH = ROOT_PATH + "mjcf/efc_terrain.xml"
 HF_IMAGE_PATH = ROOT_PATH + "hf_image/"
 HF_INPUT = HF_IMAGE_PATH + "test.png"
 
@@ -314,6 +314,24 @@ def DiscreteUneven(tg: TerrainGenerator):
         separation_rand=[0.05, 0.05],
     )
 
+def Stair(tg: TerrainGenerator):
+    tg.AddStairs(
+        init_pos=[0.0, 3.0, 0.0],
+        yaw=1.57,
+        width=0.3,
+        height=0.15,
+        length=1.5,
+        stair_nums=10,
+    )
+    tg.AddStairs(
+        init_pos=[0.0, 9.3, 0.0],
+        yaw=-1.57,
+        width=0.3,
+        height=0.15,
+        length=1.5,
+        stair_nums=10,
+    )
+
 
 def Slope(tg: TerrainGenerator):
     tg.AddBox(position=[-1.0, 0.0, 0.0], euler=[0.0, 0.20, 0.0], size=[10.0, 5.0, 0.03])
@@ -324,5 +342,6 @@ if __name__ == "__main__":
 
     DiscreteUneven(tg)
     Slope(tg)
+    Stair(tg)
 
     tg.Save()

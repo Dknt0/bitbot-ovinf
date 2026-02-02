@@ -4,7 +4,7 @@
 
   <backend port="12888" settings_file="./backend.json"/>
 
-  <mujoco file="../../models/efc/mjcf/efc.xml"/>
+  <mujoco file="../../models/efc/mjcf/efc_terrain.xml"/>
   
   <bus>
     <device id="0" type="MujocoJoint" name="left_hip_pitch_joint" mode="torque"

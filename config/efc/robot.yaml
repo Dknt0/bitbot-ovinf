@@ -403,7 +403,9 @@ RobotConfig:
       control_period: 0.01
       # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_10.onnx"
       # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_3d_v3.onnx"
-      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_3d_v42.onnx"
+      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_3d_v43.onnx"
+      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/torso_cmd.onnx"
+      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_terrain.onnx"
       obs_buffer_size: 15
 
       log_data: true
@@ -475,7 +477,7 @@ RobotConfig:
 
   policy_robust:
     controller_type: "AUTO"
-    num_delay: 0
+    num_delay: 20
     p_gains:
       l_hip_p: 150
       l_hip_r: 150
@@ -534,7 +536,8 @@ RobotConfig:
       policy_type: "BeyondMimic"
       use_absolute_clock: true
       control_period: 0.02
-      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/bym_test.onnx"
+      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/dance1.onnx"
+      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/easy_dance.onnx"
       obs_buffer_size: 1
 
       log_data: true
@@ -604,4 +607,3 @@ RobotConfig:
         r_ankle_r: 0
         l_elbow_y: 0
         r_elbow_y: 0
-
