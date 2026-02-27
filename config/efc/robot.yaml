@@ -394,19 +394,18 @@ RobotConfig:
       r_elbow_y: 2.0
       head_y: 2.0
     default_position: *defult_init_pos
-    decimation: 10
+    decimation: 20
     target_pos_filter: *default_target_pos_filter
 
     inference:
       policy_type: "Epsilon"
       use_absolute_clock: true
-      control_period: 0.01
-      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_10.onnx"
-      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_3d_v3.onnx"
-      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_3d_v43.onnx"
-      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/torso_cmd.onnx"
-      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_terrain.onnx"
-      obs_buffer_size: 15
+      control_period: 0.02
+      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_mgr.onnx"
+      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/mgr_rough.onnx"
+      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/reordered_policy.onnx"
+      # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_direct_lab.onnx"
+      obs_buffer_size: 10
 
       log_data: true
       log_dir: "/home/dknt/Project/bitbot-ovinf/log/policy"
@@ -418,10 +417,10 @@ RobotConfig:
       action_scale: 0.25
       obs_scales:
         ang_vel: 1.0
-        lin_vel: 2.0
+        lin_vel: 1.0
         command: 1.0
         dof_pos: 1.0
-        dof_vel: 0.05
+        dof_vel: 1.0
         proj_gravity: 1.0
       clip_action: 18.0
       realtime: false
@@ -429,51 +428,183 @@ RobotConfig:
 
       policy_joint_names:
         - "l_hip_p"
-        - "l_hip_r"
-        - "l_hip_y"
-        - "l_knee"
-        - "l_ankle_p"
-        - "l_ankle_r"
         - "r_hip_p"
-        - "r_hip_r"
-        - "r_hip_y"
-        - "r_knee"
-        - "r_ankle_p"
-        - "r_ankle_r"
         - "waist_y"
+        - "l_hip_r"
+        - "r_hip_r"
         - "l_shoulder_p"
-        - "l_shoulder_r"
-        - "l_shoulder_y"
-        - "l_elbow_p"
         - "r_shoulder_p"
+        - "l_hip_y"
+        - "r_hip_y"
+        - "l_shoulder_r"
         - "r_shoulder_r"
+        - "l_knee"
+        - "r_knee"
+        - "l_shoulder_y"
         - "r_shoulder_y"
+        - "l_ankle_p"
+        - "r_ankle_p"
+        - "l_elbow_p"
         - "r_elbow_p"
+        - "l_ankle_r"
+        - "r_ankle_r"
       policy_default_position:
-        l_hip_p: -0.15
-        l_hip_r: 0
-        l_hip_y: 0
-        l_knee: 0.3
-        l_ankle_p: -0.15
-        l_ankle_r: 0
-        r_hip_p: -0.15
-        r_hip_r: 0
-        r_hip_y: 0
-        r_knee: 0.3
-        r_ankle_p: -0.15
-        r_ankle_r: 0
+        l_hip_p: -0.25
+        r_hip_p: -0.25
         waist_y: 0
+        l_hip_r: 0
+        r_hip_r: 0
         l_shoulder_p: 0.3
-        l_shoulder_r: 0.1
-        l_shoulder_y: 0
-        l_elbow_p: -0.8
-        l_elbow_y: 0
         r_shoulder_p: 0.3
+        l_hip_y: 0
+        r_hip_y: 0
+        l_shoulder_r: 0.1
         r_shoulder_r: -0.1
+        l_knee: 0.5
+        r_knee: 0.5
+        l_shoulder_y: 0
         r_shoulder_y: 0
+        l_ankle_p: -0.25
+        r_ankle_p: -0.25
+        l_elbow_p: -0.8
         r_elbow_p: -0.8
-        r_elbow_y: 0
-        head_y: 0
+        l_ankle_r: 0
+        r_ankle_r: 0
+
+  # policy_walking:
+  #   controller_type: "AUTO"
+  #   num_delay: 20
+  #   p_gains:
+  #     l_hip_p: 150
+  #     l_hip_r: 150
+  #     l_hip_y: 100
+  #     l_knee: 150
+  #     l_ankle_p: 30
+  #     l_ankle_r: 30
+  #     r_hip_p: 150
+  #     r_hip_r: 150
+  #     r_hip_y: 100
+  #     r_knee: 150
+  #     r_ankle_p: 30
+  #     r_ankle_r: 30
+  #     waist_y: 100
+  #     l_shoulder_p: 30
+  #     l_shoulder_r: 20
+  #     l_shoulder_y: 10
+  #     l_elbow_p: 10
+  #     l_elbow_y: 10
+  #     r_shoulder_p: 30
+  #     r_shoulder_r: 20
+  #     r_shoulder_y: 10
+  #     r_elbow_p: 10
+  #     r_elbow_y: 10
+  #     head_y: 30
+  #   d_gains:
+  #     l_hip_p: 3.0
+  #     l_hip_r: 3.0
+  #     l_hip_y: 3.0
+  #     l_knee: 3.0
+  #     l_ankle_p: 2.0
+  #     l_ankle_r: 2.0
+  #     r_hip_p: 3.0
+  #     r_hip_r: 3.0
+  #     r_hip_y: 3.0
+  #     r_knee: 3.0
+  #     r_ankle_p: 2.0
+  #     r_ankle_r: 2.0
+  #     waist_y: 3.0
+  #     l_shoulder_p: 2.0
+  #     l_shoulder_r: 2.0
+  #     l_shoulder_y: 2.0
+  #     l_elbow_p: 2.0
+  #     l_elbow_y: 2.0
+  #     r_shoulder_p: 2.0
+  #     r_shoulder_r: 2.0
+  #     r_shoulder_y: 2.0
+  #     r_elbow_p: 2.0
+  #     r_elbow_y: 2.0
+  #     head_y: 2.0
+  #   default_position: *defult_init_pos
+  #   decimation: 10
+  #   target_pos_filter: *default_target_pos_filter
+  #
+  #   inference:
+  #     policy_type: "Epsilon"
+  #     use_absolute_clock: true
+  #     control_period: 0.01
+  #     # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_10.onnx"
+  #     # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_3d_v3.onnx"
+  #     model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_3d_v43.onnx"
+  #     # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/torso_cmd.onnx"
+  #     # model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_terrain.onnx"
+  #     obs_buffer_size: 15
+  #
+  #     log_data: true
+  #     log_dir: "/home/dknt/Project/bitbot-ovinf/log/policy"
+  #     log_name: "robust"
+  #
+  #     device: "CPU"
+  #     single_obs_size: 72
+  #     action_size: 21
+  #     action_scale: 0.25
+  #     obs_scales:
+  #       ang_vel: 1.0
+  #       lin_vel: 2.0
+  #       command: 1.0
+  #       dof_pos: 1.0
+  #       dof_vel: 0.05
+  #       proj_gravity: 1.0
+  #     clip_action: 18.0
+  #     realtime: false
+  #     stick_to_core: 5
+  #
+  #     policy_joint_names:
+  #       - "l_hip_p"
+  #       - "l_hip_r"
+  #       - "l_hip_y"
+  #       - "l_knee"
+  #       - "l_ankle_p"
+  #       - "l_ankle_r"
+  #       - "r_hip_p"
+  #       - "r_hip_r"
+  #       - "r_hip_y"
+  #       - "r_knee"
+  #       - "r_ankle_p"
+  #       - "r_ankle_r"
+  #       - "waist_y"
+  #       - "l_shoulder_p"
+  #       - "l_shoulder_r"
+  #       - "l_shoulder_y"
+  #       - "l_elbow_p"
+  #       - "r_shoulder_p"
+  #       - "r_shoulder_r"
+  #       - "r_shoulder_y"
+  #       - "r_elbow_p"
+  #     policy_default_position:
+  #       l_hip_p: -0.15
+  #       l_hip_r: 0
+  #       l_hip_y: 0
+  #       l_knee: 0.3
+  #       l_ankle_p: -0.15
+  #       l_ankle_r: 0
+  #       r_hip_p: -0.15
+  #       r_hip_r: 0
+  #       r_hip_y: 0
+  #       r_knee: 0.3
+  #       r_ankle_p: -0.15
+  #       r_ankle_r: 0
+  #       waist_y: 0
+  #       l_shoulder_p: 0.3
+  #       l_shoulder_r: 0.1
+  #       l_shoulder_y: 0
+  #       l_elbow_p: -0.8
+  #       l_elbow_y: 0
+  #       r_shoulder_p: 0.3
+  #       r_shoulder_r: -0.1
+  #       r_shoulder_y: 0
+  #       r_elbow_p: -0.8
+  #       r_elbow_y: 0
+  #       head_y: 0
 
   policy_robust:
     controller_type: "AUTO"
