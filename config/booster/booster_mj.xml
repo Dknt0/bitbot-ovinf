@@ -4,7 +4,7 @@
 
   <backend port="12888" settings_file="./backend.json"/>
 
-  <mujoco file="../../models/booster/T1_serial.xml"/>
+  <mujoco file="../../models/booster/T1_serial_terrain.xml"/>
   
   <bus>
     <device id="0" type="MujocoJoint" name="AAHead_yaw" mode="torque"
