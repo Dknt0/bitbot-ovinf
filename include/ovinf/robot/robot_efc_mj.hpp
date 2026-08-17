@@ -84,7 +84,7 @@ class RobotEfcMj : public RobotBase<float> {
 
       // Depth camera -> scan observation (perceptive policies)
       if (robot_mj->depth_camera_ != nullptr) {
-        const auto& depth_obs = robot_mj->depth_camera_->GetDepthObs();
+        std::vector<float> depth_obs = robot_mj->depth_camera_->GetDepthObs();
         if (scan_.size() != (Eigen::Index)depth_obs.size()) {
           scan_.resize(depth_obs.size());
         }

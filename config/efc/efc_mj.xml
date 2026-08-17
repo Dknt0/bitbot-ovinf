@@ -67,7 +67,7 @@
     <device id="26" type="MujocoFramelinvel" name="imu_linvel" />
 
     <device id="27" type="MujocoDepthCamera" name="depth_camera"
-      camera="depth_camera" width="64" height="36" frequency="50.0"
+      camera="depth_camera" width="64" height="36" frequency="30.0"
       min_depth="0.0" max_depth="2.5" znear="0.05" zfar="50.0" noise_stddev="0.015"
       crop_top="18" crop_bottom="0" crop_left="16" crop_right="16"
       blur_kernel="3" blur_sigma="1.0" normalize="true"

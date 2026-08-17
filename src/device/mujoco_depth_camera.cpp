@@ -87,15 +87,32 @@ namespace bitbot
     // Release the context so the physics thread can make it current.
     glfwMakeContextCurrent(nullptr);
 
+    // Image processing and debug visualization run off the physics thread.
+    processing_running_.store(true);
+    processing_thread_ = std::thread(&MujocoDepthCamera::ProcessingThread, this);
+
     logger_->info("MujocoDepthCamera {} camera:{} resolution:{}x{} (obs {}x{}) frequency:{} Hz depth range:[{}, {}] m",
                   name_, camera_name_, width_, height_, obs_width_, obs_height_, frequency_, min_depth_, max_depth_);
   }
 
   MujocoDepthCamera::~MujocoDepthCamera()
   {
+    StopProcessingThread();
     // No GL teardown: devices are destroyed after the GUI has terminated
     // GLFW (render loop returns before the kernel is destructed), so the
     // context is already gone.
+  }
+
+  void MujocoDepthCamera::StopProcessingThread()
+  {
+    processing_running_.store(false);
+    {
+      std::lock_guard<std::mutex> lk(frame_mutex_);
+      new_frame_ = false;
+    }
+    frame_cv_.notify_all();
+    if(processing_thread_.joinable())
+      processing_thread_.join();
   }
 
   void MujocoDepthCamera::UpdateModel(const mjModel* m, mjData* mj_d)
@@ -157,7 +174,10 @@ namespace bitbot
     }
 
     depth_buffer_.resize(width_ * height_);
-    depth_obs_.resize(obs_width_ * obs_height_);
+    {
+      std::lock_guard<std::mutex> lk(obs_mutex_);
+      depth_obs_.resize(obs_width_ * obs_height_);
+    }
     ready_ = true;
 
     glfwMakeContextCurrent(nullptr);
@@ -202,9 +222,37 @@ namespace bitbot
 
     glfwMakeContextCurrent(nullptr);
 
+    // Hand the newest raw frame to the processing thread; stale frames the
+    // worker did not pick up are simply overwritten.
+    {
+      std::lock_guard<std::mutex> lk(frame_mutex_);
+      raw_latest_ = depth_buffer_;
+      new_frame_ = true;
+    }
+    frame_cv_.notify_one();
+  }
+
+  void MujocoDepthCamera::ProcessingThread()
+  {
+    while(true)
+    {
+      std::unique_lock<std::mutex> lk(frame_mutex_);
+      frame_cv_.wait(lk, [this] { return new_frame_ || !processing_running_.load(); });
+      if(!new_frame_ && !processing_running_.load())
+        return;
+      raw_work_.swap(raw_latest_);
+      new_frame_ = false;
+      lk.unlock();
+
+      ProcessFrame(raw_work_);
+    }
+  }
+
+  void MujocoDepthCamera::ProcessFrame(std::vector<float>& raw)
+  {
     // OpenGL depth z in [0, 1] (znear .. zfar, mjrContext defaults to
     // mjDEPTH_ZERONEAR) -> metric depth; z == 1 (sky) -> zfar.
-    cv::Mat depth_image(height_, width_, CV_32FC1, depth_buffer_.data());
+    cv::Mat depth_image(height_, width_, CV_32FC1, raw.data());
     std::normal_distribution<float> noise(0.0f, (float)noise_stddev_);
     for(int i = 0; i < depth_image.rows; ++i)
     {
@@ -241,11 +289,21 @@ namespace bitbot
       processed.copyTo(continuous);
       processed = continuous;
     }
-    std::memcpy(depth_obs_.data(), processed.ptr<float>(0), depth_obs_.size() * sizeof(float));
 
-    if(frame_count_ == 0)
     {
-      auto minmax = std::minmax_element(depth_obs_.begin(), depth_obs_.end());
+      std::lock_guard<std::mutex> lk(obs_mutex_);
+      std::memcpy(depth_obs_.data(), processed.ptr<float>(0), depth_obs_.size() * sizeof(float));
+      processed_count_++;
+    }
+
+    if(processed_count_ == 1)
+    {
+      std::vector<float> obs;
+      {
+        std::lock_guard<std::mutex> lk(obs_mutex_);
+        obs = depth_obs_;
+      }
+      auto minmax = std::minmax_element(obs.begin(), obs.end());
       double scale = normalize_ ? (max_depth_ - min_depth_) : 0.0;
       double offset = normalize_ ? min_depth_ : 0.0;
       logger_->info("MujocoDepthCamera {} first depth frame: obs range [{:.3f}, {:.3f}] m",
@@ -260,7 +318,7 @@ namespace bitbot
       cv::resize(img8u, img_big, cv::Size(img8u.cols * 5, img8u.rows * 5), 0, 0, cv::INTER_NEAREST);
       cv::imshow("depth_camera: " + name_, img_big);
 
-      // if(frame_count_ % 60 == 0)
+      // if(processed_count_ % 60 == 0)
       //   cv::imwrite("/tmp/depth_debug_obs.png", img_big);
     }
 
@@ -273,7 +331,7 @@ namespace bitbot
       cv::resize(full8u, full_big, cv::Size(full8u.cols * 8, full8u.rows * 8), 0, 0, cv::INTER_NEAREST);
       cv::imshow("depth_camera full: " + name_, full_big);
 
-      // if(frame_count_ % 60 == 0)
+      // if(processed_count_ % 60 == 0)
       //   cv::imwrite("/tmp/depth_debug_full.png", full_big);
     }
 
@@ -293,10 +351,17 @@ namespace bitbot
     monitor_data_[2] = measured_frequency_;
   }
 
+  std::vector<float> MujocoDepthCamera::GetDepthObs() const
+  {
+    std::lock_guard<std::mutex> lk(obs_mutex_);
+    return depth_obs_;
+  }
+
   cv::Mat MujocoDepthCamera::GetDepthImage() const
   {
+    std::vector<float> obs = GetDepthObs();
     cv::Mat image(obs_height_, obs_width_, CV_32FC1);
-    std::memcpy(image.data, depth_obs_.data(), depth_obs_.size() * sizeof(float));
+    std::memcpy(image.data, obs.data(), obs.size() * sizeof(float));
     return image;
   }
 }
