@@ -9,9 +9,9 @@ import numpy as np
 import cv2
 import noise
 
-ROOT_PATH = "/home/dknt/Project/bitbot-ovinf/models/efc/"
-INPUT_SCENE_PATH = ROOT_PATH + "mjcf/efc.xml"
-OUTPUT_SCENE_PATH = ROOT_PATH + "mjcf/efc_terrain.xml"
+ROOT_PATH = "/home/dknt/Project/bitbot-ovinf/models/dex/"
+INPUT_SCENE_PATH = ROOT_PATH + "mjcf/dex.xml"
+OUTPUT_SCENE_PATH = ROOT_PATH + "mjcf/dex_terrain.xml"
 HF_IMAGE_PATH = ROOT_PATH + "hf_image/"
 HF_INPUT = HF_IMAGE_PATH + "test.png"
 
@@ -341,11 +341,102 @@ def Slope(tg: TerrainGenerator):
     tg.AddBox(position=[-1.0, 0.0, 0.0], euler=[0.0, 0.20, 0.0], size=[10.0, 5.0, 0.03])
 
 
+def Gap(tg: TerrainGenerator):
+    """Slope up to a platform, then platforms separated by gaps
+    (port of the gazebo terrain generator)."""
+    import numpy as np
+
+    init_pos = np.array([1.0, -3.0, 0.0])
+    bias_x = 3.0
+    platform_l = 1.0
+    gap_size = [0.6, 0.6, 0.6, 0.6]
+    height = 0.3
+    slope_angle = 0.12  # rad (~7 deg)
+    slope_width = 2.0
+    slope_thickness = 0.005
+
+    slope_length = height / np.sin(slope_angle)
+    slope_horiz = slope_length * np.cos(slope_angle)
+    slope_x_center = bias_x - slope_horiz / 2
+
+    tg.AddBox(
+        position=(init_pos + np.array([slope_x_center, 0.0, height / 2])).tolist(),
+        euler=[0.0, -slope_angle, 0.0],
+        size=[slope_length, slope_width, slope_thickness],
+    )
+    box_pos = init_pos + np.array([bias_x + platform_l / 2.0, 0.0, height / 2])
+    tg.AddBox(position=box_pos.tolist(), size=[platform_l, 2.0, height])
+    for _ in gap_size:
+        box_pos = box_pos + np.array([platform_l + 0.6, 0.0, 0.0])
+        tg.AddBox(position=box_pos.tolist(), size=[platform_l, 2.0, height])
+
+
+def Stairs(tg: TerrainGenerator):
+    """Pyramid stairs: 10 up, platform, 10 down (gazebo layout)."""
+    import numpy as np
+
+    init_pos = np.array([1.0, 2.0, 0.0])
+    height = 0.15
+    width = 0.4
+    length = 4.5
+    stair_nums = 10
+    platform_length = 1.0
+
+    tg.AddStairs(
+        init_pos=init_pos.tolist(),
+        yaw=0.0,
+        width=width,
+        height=height,
+        length=length,
+        stair_nums=stair_nums,
+    )
+    tg.AddBox(
+        position=[
+            init_pos[0] + width * stair_nums + (width + platform_length) / 2,
+            init_pos[1],
+            height * stair_nums + init_pos[2] - 0.05,
+        ],
+        euler=[0.0, 0.0, 0.0],
+        size=[platform_length, length, 0.1],
+    )
+    tg.AddStairs(
+        init_pos=(
+            init_pos
+            + np.array([width * (stair_nums * 2 + 1) + platform_length, 0.0, 0.0])
+        ).tolist(),
+        yaw=3.14,
+        width=width,
+        height=height,
+        length=length,
+        stair_nums=stair_nums,
+    )
+
+
+def DexTerrain(tg: TerrainGenerator):
+    """Dex perceptive-policy test terrain (gazebo reference layout)."""
+    Gap(tg)
+    Stairs(tg)
+    tg.AddBox(position=[20.0, 0.0, 0.0], euler=[0.0, 0.0, 0.0], size=[1.0, 20.0, 5])
+    tg.AddBox(position=[0.0, -10.0, 0.0], euler=[0.0, 0.0, 0.0], size=[20.0, 1.0, 5])
+    tg.AddBox(position=[2.0, 7.0, 0.0], euler=[0.0, 0.0, 0.0], size=[2.0, 3.0, 0.6])
+
+
 if __name__ == "__main__":
+    import sys
+
+    # Usage: terrain_generator.py [dex|dex]
+    robot = sys.argv[1] if len(sys.argv) > 1 else "dex"
+    ROOT_PATH = f"/home/dknt/Project/bitbot-ovinf/models/{robot}/"
+    INPUT_SCENE_PATH = ROOT_PATH + f"mjcf/{robot}.xml"
+    OUTPUT_SCENE_PATH = ROOT_PATH + f"mjcf/{robot}_terrain.xml"
+
     tg = TerrainGenerator()
 
-    DiscreteUneven(tg)
-    Slope(tg)
-    Stair(tg)
+    if robot == "dex":
+        DexTerrain(tg)
+    else:
+        DiscreteUneven(tg)
+        Slope(tg)
+        Stair(tg)
 
     tg.Save()

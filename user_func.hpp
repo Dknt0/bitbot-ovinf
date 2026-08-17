@@ -250,9 +250,15 @@ class MakeBitbotEverywhere {
           if (first) {
             first = false;
             robot_->SetExtraData(extra_data);
+            // Hold the robot from the first physics step, like ros2_control
+            // in gazebo. Without this the waiting state outputs zero torque
+            // and the robot collapses before init_pose is triggered.
+            init_pos_controller_->Init();
           }
 
           robot_->Observer()->Update();
+          init_pos_controller_->Step();
+          robot_->Executor()->ExecuteJointTorque();
         },
         {Events::InitPose});
 

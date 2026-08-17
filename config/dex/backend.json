@@ -1,0 +1,80 @@
+{
+  "control": [
+    {
+      "event": "enable_record",
+      "kb_key": "m"
+    },
+    {
+      "event": "start",
+      "kb_key": "8"
+    },
+    {
+      "event": "power_on",
+      "kb_key": "9"
+    },
+    {
+      "event": "stop",
+      "kb_key": " "
+    },
+    {
+      "event": "init_pose",
+      "kb_key": "p"
+    },
+    {
+      "event": "run_policy",
+      "kb_key": "r"
+    },
+    {
+      "event": "enable_standing_policy",
+      "kb_key": "1"
+    },
+    {
+      "event": "enable_warking_policy",
+      "kb_key": "2"
+    },
+    {
+      "event": "enable_robust_policy",
+      "kb_key": "3"
+    },
+    {
+      "event": "policy_switch",
+      "kb_key": "$"
+    },
+    {
+      "event": "velo_x_increase",
+      "kb_key": "i"
+    },
+    {
+      "event": "velo_x_decrease",
+      "kb_key": "k"
+    },
+    {
+      "event": "velo_y_increase",
+      "kb_key": "j"
+    },
+    {
+      "event": "velo_y_decrease",
+      "kb_key": "l"
+    },
+    {
+      "event": "velo_w_increase",
+      "kb_key": "u"
+    },
+    {
+      "event": "velo_w_decrease",
+      "kb_key": "o"
+    },
+    {
+      "event": "set_vel_x",
+      "kb_key": "!"
+    },
+    {
+      "event": "set_vel_y",
+      "kb_key": "@"
+    },
+    {
+      "event": "set_vel_w",
+      "kb_key": "#"
+    }
+  ]
+}
