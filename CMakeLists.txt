@@ -52,13 +52,16 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 
 find_package(OpenVINO REQUIRED)
 find_package(yaml-cpp REQUIRED)
+find_package(OpenCV REQUIRED)
 
-add_executable(main_app 
+add_executable(main_app
   main.cc
+  src/device/mujoco_depth_camera.cpp
 )
 
 target_include_directories(main_app PUBLIC ${OVINF_INCLUDED}
   ${OpenVINO_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
   "/usr/include/eigen3/"
   ${CMAKE_SOURCE_DIR}/include
 )
@@ -68,11 +71,13 @@ if(DEPLOY)
     BitbotCifx
     BitbotKernel
     ovinf
+    ${OpenCV_LIBS}
   )
 else()
   target_link_libraries(main_app
     BitbotMujoco
     ovinf
+    ${OpenCV_LIBS}
   )
 endif()
 

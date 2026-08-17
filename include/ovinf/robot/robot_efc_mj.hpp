@@ -1,6 +1,7 @@
 #ifndef ROBOT_EFC_MJ_HPP
 #define ROBOT_EFC_MJ_HPP
 
+#include <algorithm>
 #include <filesystem>
 #include <vector>
 
@@ -80,6 +81,15 @@ class RobotEfcMj : public RobotBase<float> {
           Eigen::AngleAxisf(euler_rpy_[0], Eigen::Vector3f::UnitX()));
       proj_gravity_ =
           VectorT(Rwb.transpose() * Eigen::Vector3f{0.0, 0.0, -1.0});
+
+      // Depth camera -> scan observation (perceptive policies)
+      if (robot_mj->depth_camera_ != nullptr) {
+        const auto& depth_obs = robot_mj->depth_camera_->GetDepthObs();
+        if (scan_.size() != (Eigen::Index)depth_obs.size()) {
+          scan_.resize(depth_obs.size());
+        }
+        std::copy(depth_obs.begin(), depth_obs.end(), scan_.data());
+      }
 
       if (log_flag_) {
         WriteLog();
@@ -193,6 +203,7 @@ class RobotEfcMj : public RobotBase<float> {
  private:
   std::vector<MotorPtr> motors_ = {};
   ImuPtr imu_;
+  DepthCameraPtr depth_camera_ = nullptr;
   Kernel::ExtraData* extra_data_;
   // std::vector<AnklePtr> ankles_;
 };
@@ -203,6 +214,16 @@ void RobotEfcMj::GetDevice(const KernelBus& bus) {
   }
 
   imu_ = bus.GetDevice<ImuDevice>(motor_size_).value();
+
+  // Optional depth camera (id 27), used by perceptive policies.
+  if (auto camera = bus.GetDevice<DepthCameraDevice>(motor_size_ + 3);
+      camera.has_value()) {
+    depth_camera_ = camera.value();
+  } else {
+    std::cerr << "[RobotEfcMj] Depth camera device not found, "
+                 "perceptive policies will receive an empty scan."
+              << std::endl;
+  }
 }
 
 void RobotEfcMj::ObserverEfcMj::CreateLog(YAML::Node const& config) {

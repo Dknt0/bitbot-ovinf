@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <bitbot>
-  <logger path="../../log/" level="info"/>
+  <logger path="../../log/" level="debug"/>
 
   <backend port="12888" settings_file="./backend.json"/>
 
@@ -65,5 +65,12 @@
       site="imu" acc="linear-acceleration" gyro="angular-velocity"/>
     <device id="25" type="MujocoFramepos" name="imu_pos" />
     <device id="26" type="MujocoFramelinvel" name="imu_linvel" />
+
+    <device id="27" type="MujocoDepthCamera" name="depth_camera"
+      camera="depth_camera" width="64" height="36" frequency="60.0"
+      min_depth="0.0" max_depth="2.5" znear="0.05" zfar="50.0" noise_stddev="0.01"
+      crop_top="18" crop_bottom="0" crop_left="16" crop_right="16"
+      blur_kernel="3" blur_sigma="1.0" normalize="true"
+      debug_vis="false" debug_vis_raw="false"/>
   </bus>
 </bitbot>

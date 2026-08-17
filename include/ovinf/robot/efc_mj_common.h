@@ -1,6 +1,7 @@
 #ifndef EFC_MJ_COMMON_HPP
 #define EFC_MJ_COMMON_HPP
 
+#include "bitbot_mujoco/device/mujoco_depth_camera.hpp"
 #include "bitbot_mujoco/device/mujoco_imu.h"
 #include "bitbot_mujoco/device/mujoco_joint.h"
 #include "bitbot_mujoco/kernel/mujoco_kernel.hpp"
@@ -79,6 +80,8 @@ using ImuDevice = bitbot::MujocoImu;
 using ImuPtr = ImuDevice*;
 using MotorDevice = bitbot::MujocoJoint;
 using MotorPtr = MotorDevice*;
+using DepthCameraDevice = bitbot::MujocoDepthCamera;
+using DepthCameraPtr = DepthCameraDevice*;
 using AnklePtr = std::shared_ptr<ovinf::ParallelAnkle<float>>;
 
 struct UserData {};

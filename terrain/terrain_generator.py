@@ -106,7 +106,10 @@ class TerrainGenerator:
         r = np.random.uniform(0, 1)
         g = np.random.uniform(0, 1 - r)
         b = 1 - r - g
-        geo.attrib["rgba"] = f"{r} {g} {b} {0.95}"
+        # Alpha must be 1.0: MuJoCo renders geoms with rgba alpha < 0.995 in
+        # the transparent pass without depth-buffer writes, making them
+        # invisible to depth cameras (mjr_readPixels).
+        geo.attrib["rgba"] = f"{r} {g} {b} 1.0"
 
     def AddGeometry(
         self,

@@ -52,7 +52,8 @@ class PolicyCtrAuto : public PolicyControllerBase {
                               .proj_gravity = robot_->Observer()->ProjGravity(),
                               .joint_pos = pos_input,
                               .joint_vel = vel_input,
-                              .euler_angles = robot_->Observer()->EulerRpy()});
+                              .euler_angles = robot_->Observer()->EulerRpy(),
+                              .scan = robot_->Observer()->Depth()});
     }
     policy_target_position_ = robot_->Executor()->JointTargetPosition();
     // target_pos_filter_->Filter(policy_target_position_);
@@ -89,7 +90,8 @@ class PolicyCtrAuto : public PolicyControllerBase {
            .proj_gravity = robot_->Observer()->ProjGravity(),
            .joint_pos = pos_input,
            .joint_vel = vel_input,
-           .euler_angles = robot_->Observer()->EulerRpy()});
+           .euler_angles = robot_->Observer()->EulerRpy(),
+           .scan = robot_->Observer()->Depth()});
     }
 
     if (set_target) {

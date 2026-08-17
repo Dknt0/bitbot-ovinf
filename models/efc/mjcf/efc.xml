@@ -141,6 +141,10 @@
         <joint name="waist_joint" pos="0 0 0" axis="0 0 1" range="-2.13 2.13" actuatorfrcrange="-200 200"/>
         <geom type="mesh" class="visual" mesh="upper_body"/>
         <geom size="0.2 0.175 0.3" pos="0 0 0.2" type="box" class="collision"/>
+        <!-- Depth camera, same mounting pose and fov as the efc gazebo model.
+             Euler verified: look [0.643 0 -0.766], up [0.766 0 0.643]. -->
+        <camera name="depth_camera" pos="0.12380269 -0.0475 0.22030226"
+                euler="0 -0.6981320 -1.5707963" mode="fixed" fovy="58.35"/>
         <body name="left_shoulder_pitch_link" pos="0 0.1665 0.2571">
           <inertial pos="0.00344718 0.0423351 -0.00711074" quat="0.843856 0.0101112 0.0292772 0.535674" mass="0.694216" diaginertia="0.000615881 0.000567583 0.000517536"/>
           <joint name="left_shoulder_pitch_joint" pos="0 0 0" axis="0 1 0" range="-3.14 0.79" actuatorfrcrange="-200 200"/>
