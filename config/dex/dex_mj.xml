@@ -5,7 +5,6 @@
   <backend port="12888" settings_file="./backend.json"/>
 
   <mujoco file="../../models/dex/mjcf/dex_terrain.xml"/>
-  <!-- <mujoco file="../../models/dex/mjcf/dex.xml"/> -->
 
   <bus>
     <device id="0" type="MujocoJoint" name="hip_pitch_l_joint" mode="torque"
@@ -74,9 +73,9 @@
 
     <device id="32" type="MujocoDepthCamera" name="depth_camera"
       camera="depth_camera" width="64" height="36" frequency="50.0"
-      min_depth="0.0" max_depth="2.5" znear="0.05" zfar="20.0" noise_stddev="0.00"
+      min_depth="0.0" max_depth="2.5" znear="0.10" zfar="50.0" noise_stddev="0.00"
       crop_top="18" crop_bottom="0" crop_left="16" crop_right="16"
       blur_kernel="3" blur_sigma="1.0" normalize="true"
-      debug_vis="true" debug_vis_raw="true"/>
+      debug_vis="false" debug_vis_raw="false"/>
   </bus>
 </bitbot>

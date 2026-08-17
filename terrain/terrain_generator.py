@@ -303,42 +303,6 @@ class TerrainGenerator:
         self.scene.write(OUTPUT_SCENE_PATH)
 
 
-def DiscreteUneven(tg: TerrainGenerator):
-    tg.AddRoughGround(
-        init_pos=[1.5, -3.0, 0.005],
-        euler=[0, 0, 0.0],
-        nums=[15, 15],
-        box_size=[0.5, 0.5, 0.3],
-        box_euler=[0.0, 0.0, 0.0],
-        separation=[0.5, 0.5],
-        box_size_rand=[0.2, 0.2, 0.01],
-        # box_euler_rand=[0.07, 0.07, 0.3],
-        box_euler_rand=[0.19, 0.19, 0.3],
-        separation_rand=[0.05, 0.05],
-    )
-
-
-def Stair(tg: TerrainGenerator):
-    tg.AddStairs(
-        init_pos=[0.0, 3.0, 0.0],
-        yaw=1.57,
-        width=0.3,
-        height=0.15,
-        length=4.0,
-        stair_nums=10,
-    )
-    tg.AddStairs(
-        init_pos=[0.0, 9.3, 0.0],
-        yaw=-1.57,
-        width=0.3,
-        height=0.15,
-        length=4.0,
-        stair_nums=10,
-    )
-
-
-def Slope(tg: TerrainGenerator):
-    tg.AddBox(position=[-1.0, 0.0, 0.0], euler=[0.0, 0.20, 0.0], size=[10.0, 5.0, 0.03])
 
 
 def Gap(tg: TerrainGenerator):
@@ -377,7 +341,7 @@ def Stairs(tg: TerrainGenerator):
 
     init_pos = np.array([1.0, 2.0, 0.0])
     height = 0.15
-    width = 0.4
+    width = 0.35
     length = 4.5
     stair_nums = 10
     platform_length = 1.0
@@ -432,11 +396,6 @@ if __name__ == "__main__":
 
     tg = TerrainGenerator()
 
-    if robot == "dex":
-        DexTerrain(tg)
-    else:
-        DiscreteUneven(tg)
-        Slope(tg)
-        Stair(tg)
+    DexTerrain(tg)
 
     tg.Save()

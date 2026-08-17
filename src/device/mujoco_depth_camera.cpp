@@ -145,12 +145,12 @@ void MujocoDepthCamera::UpdateModel(const mjModel* m, mjData* mj_d) {
   if (model->vis.global.offheight < height_)
     model->vis.global.offheight = height_;
 
-  // Optional near/far plane override in absolute meters; 0 keeps the model
-  // default (vis.map value * extent). Applied per frame to this camera's
-  // own frustum in Render(), NOT to the model: overriding vis.map would
-  // also change the interactive GUI clipping.
-  znear_abs_ = znear_ > 0 ? (float)znear_ : m->vis.map.znear * m->stat.extent;
-  zfar_abs_ = zfar_ > 0 ? (float)zfar_ : m->vis.map.zfar * m->stat.extent;
+  // Optional near/far plane override, vis.map values are relative to the
+  // model extent. Note: this also affects the interactive view.
+  if (znear_ > 0) model->vis.map.znear = znear_ / m->stat.extent;
+  if (zfar_ > 0) model->vis.map.zfar = zfar_ / m->stat.extent;
+  znear_abs_ = m->vis.map.znear * m->stat.extent;
+  zfar_abs_ = m->vis.map.zfar * m->stat.extent;
 
   glfwMakeContextCurrent(gl_window_);
 
@@ -226,11 +226,6 @@ void MujocoDepthCamera::Render(const mjModel* m, mjData* mj_d) {
   // mjCAT_STATIC | mjCAT_DYNAMIC: real geometry only, no decorations
   mjv_updateScene(m, mj_d, &opt_, nullptr, &cam_, mjCAT_STATIC | mjCAT_DYNAMIC,
                   &scn_);
-  // Own clip planes on this scene's cameras only (both stereo eyes)
-  for (int i = 0; i < 2; i++) {
-    scn_.camera[i].frustum_near = znear_abs_;
-    scn_.camera[i].frustum_far = zfar_abs_;
-  }
   mjr_render(viewport_, &scn_, &con_);
   mjr_readPixels(nullptr, depth_buffer_.data(), viewport_, &con_);
 
@@ -262,8 +257,7 @@ void MujocoDepthCamera::ProcessingThread() {
 
 void MujocoDepthCamera::ProcessFrame(std::vector<float>& raw) {
   // OpenGL depth z in [0, 1] (znear .. zfar, mjrContext defaults to
-  // mjDEPTH_ZERONEAR) -> metric depth; z == 1 (sky) -> zfar. Noise in
-  // meters, like the gz sensor. Values stay metric until step 3 below.
+  // mjDEPTH_ZERONEAR) -> metric depth; z == 1 (sky) -> zfar.
   cv::Mat depth_image(height_, width_, CV_32FC1, raw.data());
   std::normal_distribution<float> noise(0.0f, (float)noise_stddev_);
   for (int i = 0; i < depth_image.rows; ++i) {
@@ -274,33 +268,25 @@ void MujocoDepthCamera::ProcessFrame(std::vector<float>& raw) {
           z >= 1.0f ? zfar_abs_
                     : znear_abs_ / (1.0f - z * (1.0f - znear_abs_ / zfar_abs_));
       if (noise_stddev_ > 0) metric += noise(noise_rng_);
-      row[j] = metric;
+      metric = std::min(std::max(metric, (float)min_depth_), (float)max_depth_);
+      row[j] = normalize_ ? (metric - min_depth_) / (max_depth_ - min_depth_)
+                          : metric;
     }
   }
   // OpenGL rows are bottom-up
   cv::flip(depth_image, depth_image, 0);
 
-  // Gazebo pipeline order (gz_depth_camera.cc):
-  // 1. crop
   cv::Mat processed = depth_image;
   if (crop_top_ || crop_bottom_ || crop_left_ || crop_right_)
     processed =
         depth_image(cv::Rect(crop_left_, crop_top_, obs_width_, obs_height_));
-  // 2. gaussian blur
   if (blur_kernel_ > 0) {
     cv::Mat blurred;
     cv::GaussianBlur(processed, blurred, cv::Size(blur_kernel_, blur_kernel_),
                      blur_sigma_, blur_sigma_, cv::BORDER_REFLECT);
     processed = blurred;
   }
-  // 3. clip to [min_depth, max_depth] and normalize
-  cv::Mat clipped;
-  cv::min(processed, (float)max_depth_, clipped);
-  cv::max(clipped, (float)min_depth_, clipped);
-  if (normalize_)
-    clipped = (clipped - (float)min_depth_) / (float)(max_depth_ - min_depth_);
-  processed = clipped;
-
+  // Cropping without blur leaves a non-continuous view of depth_image
   if (!processed.isContinuous()) {
     cv::Mat continuous;
     processed.copyTo(continuous);
@@ -315,26 +301,25 @@ void MujocoDepthCamera::ProcessFrame(std::vector<float>& raw) {
   }
 
   if (processed_count_ == 1) {
+    std::vector<float> obs;
+    {
+      std::lock_guard<std::mutex> lk(obs_mutex_);
+      obs = depth_obs_;
+    }
+    auto minmax = std::minmax_element(obs.begin(), obs.end());
+    double scale = normalize_ ? (max_depth_ - min_depth_) : 0.0;
+    double offset = normalize_ ? min_depth_ : 0.0;
     logger_->info(
         "MujocoDepthCamera {} first depth frame: obs range [{:.3f}, {:.3f}] m",
-        name_, min_depth_, max_depth_);
+        name_, *minmax.first * scale + offset, *minmax.second * scale + offset);
   }
 
   if (debug_vis_) {
-    // Same reconstruction as gz_depth_camera.cc: scale by fixed max = 1.0
-    // (normalized obs), no min subtraction, INTER_AREA upscale.
-    double maxVal = 1.0;
     cv::Mat img8u;
-    if (maxVal < 1e-6) {
-      img8u = cv::Mat::zeros(processed.size(), CV_8U);
-    } else {
-      processed.convertTo(img8u, CV_8U, 255.0 / maxVal);
-    }
+    processed.convertTo(img8u, CV_8UC1, 255.0);
     cv::Mat img_big;
-    int scale = 5;
-    cv::resize(img8u, img_big, cv::Size(img8u.cols * scale, img8u.rows * scale),
-               0, 0, cv::INTER_AREA);
-    cv::namedWindow("depth_camera: " + name_, cv::WINDOW_NORMAL);
+    cv::resize(img8u, img_big, cv::Size(img8u.cols * 5, img8u.rows * 5), 0, 0,
+               cv::INTER_NEAREST);
     cv::imshow("depth_camera: " + name_, img_big);
 
     // if(processed_count_ % 60 == 0)
@@ -345,8 +330,7 @@ void MujocoDepthCamera::ProcessFrame(std::vector<float>& raw) {
   // the image (gazebo pipeline), which hides distant obstacles.
   if (debug_vis_raw_) {
     cv::Mat full8u, full_big;
-    // depth_image is metric (meters); scale by the preset max depth
-    depth_image.convertTo(full8u, CV_8UC1, 255.0 / max_depth_);
+    depth_image.convertTo(full8u, CV_8UC1, 255.0);
     cv::resize(full8u, full_big, cv::Size(full8u.cols * 8, full8u.rows * 8), 0,
                0, cv::INTER_NEAREST);
     cv::imshow("depth_camera full: " + name_, full_big);

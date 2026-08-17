@@ -580,7 +580,7 @@ RobotConfig:
       policy_type: "Locomotion"
       use_absolute_clock: true
       control_period: 0.01
-      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/efc/theta_3d_v43.onnx"
+      model_path: "/home/dknt/Project/bitbot-ovinf/checkpoint/dex/theta_3d_v43.onnx"
       obs_buffer_size: 15
       cycle_time: 0.8
       phase_offset_left: 0.38
