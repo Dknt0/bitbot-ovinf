@@ -257,7 +257,7 @@ namespace bitbot
       cv::Mat img8u;
       processed.convertTo(img8u, CV_8UC1, 255.0);
       cv::Mat img_big;
-      cv::resize(img8u, img_big, cv::Size(img8u.cols * 4, img8u.rows * 4), 0, 0, cv::INTER_NEAREST);
+      cv::resize(img8u, img_big, cv::Size(img8u.cols * 5, img8u.rows * 5), 0, 0, cv::INTER_NEAREST);
       cv::imshow("depth_camera: " + name_, img_big);
 
       // if(frame_count_ % 60 == 0)

@@ -317,13 +317,14 @@ def DiscreteUneven(tg: TerrainGenerator):
         separation_rand=[0.05, 0.05],
     )
 
+
 def Stair(tg: TerrainGenerator):
     tg.AddStairs(
         init_pos=[0.0, 3.0, 0.0],
         yaw=1.57,
         width=0.3,
         height=0.15,
-        length=1.5,
+        length=4.0,
         stair_nums=10,
     )
     tg.AddStairs(
@@ -331,7 +332,7 @@ def Stair(tg: TerrainGenerator):
         yaw=-1.57,
         width=0.3,
         height=0.15,
-        length=1.5,
+        length=4.0,
         stair_nums=10,
     )
 
