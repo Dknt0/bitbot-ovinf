@@ -56,7 +56,7 @@ find_package(OpenCV REQUIRED)
 
 add_executable(main_app
   main.cc
-  src/device/mujoco_depth_camera.cpp
+  src/device/mujoco_depth_camera.cc
 )
 
 target_include_directories(main_app PUBLIC ${OVINF_INCLUDED}

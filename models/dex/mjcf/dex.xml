@@ -175,7 +175,7 @@
             <joint name="waist_pitch_joint" pos="0 0 0" axis="0 1 0" range="-0.523599 0.959931" actuatorfrcrange="-150 150" />
             <geom type="mesh" class="visual" mesh="waist_pitch_link" />
             <geom type="mesh" class="collision" mesh="waist_pitch_link" />
-            <camera name="depth_camera" pos="0.092709 -0.07125 0.039976"
+            <camera name="depth_camera" pos="0.092709 -0.02375 0.039976"
                     euler="0 -0.6108652 -1.5707963" mode="fixed" fovy="58.29"/>
             <geom pos="0 0 0.43627" quat="1 0 0 0" type="mesh" class="visual" mesh="head_yaw_link" />
             <geom pos="0.0689 -7.7578e-05 0.43567" quat="1 0 0 0" type="mesh" class="visual" mesh="head_pitch_link" />
